@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eByMazon</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'gui.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <ul id="nav">
+        <li><a href="{% url 'index' %}">Home</a></li>
+    </ul>
+    {% block content %}{% endblock %}
+</body>
+</html>
