@@ -1,10 +1,37 @@
 {% extends 'gui.html' %}
 
 {% block css %}
-    <style>#tester { font-weight: bold; }</style>
+    <style>
+        .tester {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background-color: gray;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome to the home page!</h1>
-    <p id="tester">Welcome to eByMazon!</p>
+    <h1>Welcome to eByMazon!</h1>
+    <h2>Your Information</h2>
+    <h3>{{ user }}</h3>
+    {% if user.profile.is_su %}
+        <h3>Super User</h3>
+    {% elif user.is_authenticated %}
+        <h3>Ordinary User</h3>
+    {% else %}
+        <h3>Guest User</h3>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <h2>Recommended Items</h2>
+        <h4>Based on Recently Purchased Items</h4>
+        <span class="tester"></span>
+        <span class="tester"></span>
+        <span class="tester"></span>
+    {% endif %}
+    <h2>Hottest Items</h2>
+    <span class="tester"></span>
+    <span class="tester"></span>
+    <span class="tester"></span>
+    <span class="tester"></span>
 {% endblock %}

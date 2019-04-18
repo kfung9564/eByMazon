@@ -1,0 +1,38 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Applications</h1>
+{% if apps.all %}
+    {% for app in apps %}
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>{{ app.username }}</td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td>{{ app.name }}</td>
+            </tr>
+            <tr>
+                <td>Credit Card Number:</td>
+                <td>{{ app.credit_card_num }}</td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td>{{ app.address }}</td>
+            </tr>
+            <tr>
+                <td>Phone Number:</td>
+                <td>{{ app.phone_num }}</td>
+            </tr>
+            <tr>
+                <td><button>Approve</button></td>
+                <td><button>Deny</button></td>
+            </tr>
+        </table>
+        <br />
+    {% endfor %}
+{% else %}
+    <h2>No applications available at this time.</h2>
+{% endif %}
+{% endblock %}

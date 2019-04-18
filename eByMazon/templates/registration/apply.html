@@ -1,0 +1,11 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h2>Apply for Membership</h2>
+<p>Your signup details will be sent to a Super User for approval.</p>
+<form method="post">
+    {% csrf_token %}
+    <table>{{ form.as_table }}</table>
+    <button type="submit">Sign up</button>
+</form>
+{% endblock %}

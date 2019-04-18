@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
+    'items.apps.ItemsConfig'
+
 ]
 
 MIDDLEWARE = [
@@ -123,3 +126,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "eByMazon/static"),
     '/var/www/static/',
 ]
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
