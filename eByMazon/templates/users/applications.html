@@ -26,8 +26,8 @@
                 <td>{{ app.phone_num }}</td>
             </tr>
             <tr>
-                <td><button>Approve</button></td>
-                <td><button>Deny</button></td>
+                <td><a href="{% url 'approveUser' %}?Username={{ app.username }}"><button>Approve</button></a></td>
+                <td><a href="{% url 'denyUser' %}?Username={{ app.username }}"><button>Deny</button></a></td>
             </tr>
         </table>
         <br />

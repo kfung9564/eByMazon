@@ -7,6 +7,8 @@ urlpatterns = [
     path('apply/', views.apply, name='apply'),
     path('applications/', views.uapps, name='uapps'),
     path('applications/success', views.uappsuccess, name='uappsuccess'),
+    path('applications/approve', views.uappapprove, name='approveUser'),
+    path('applications/deny', views.uappdeny, name='denyUser'),
 
     # users/login/ [name='login']
     # users/logout/ [name='logout']

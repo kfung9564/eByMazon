@@ -5,7 +5,6 @@ from django.dispatch import receiver
 
 # Create your models here.
 
-
 class UserApplication(models.Model):
     username = models.CharField(unique=True, null=False, max_length=255)
     name = models.CharField(null=False, max_length=255)

@@ -15,11 +15,22 @@ def apply(request):
     return render(request, 'registration/apply.html', {'form': form})
 
 
+
+def uappsuccess(request):
+    return render(request, 'registration/uappsuccess.html')
+
+
 @su_required
 def uapps(request):
     apps = UserApplication.objects.all()
     return render(request, 'users/applications.html', {'apps': apps})
 
 
-def uappsuccess(request):
-    return render(request, 'registration/uappsuccess.html')
+@su_required
+def uappapprove(request):
+    return render(request, 'users/approveUser.html')
+
+
+@su_required
+def uappdeny(request):
+    return render(request, 'users/denyUser.html')
