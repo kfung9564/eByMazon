@@ -1,11 +1,14 @@
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+
 from .forms import UserAppForm
 from .models import UserApplication
-from .models import Profile
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
-
 
 
 def apply(request):
@@ -21,6 +24,26 @@ def apply(request):
 
 def uappsuccess(request):
     return render(request, 'registration/uappsuccess.html')
+
+
+@login_required
+def newuserlanding(request):
+    if request.user.profile.is_new is False:
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = SetPasswordForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            getUser = User.objects.get(username=user.username)
+            getUser.profile.is_new = False
+            getUser.save()
+            messages.success(request, 'Your password is set. Welcome to eByMazon!')
+            return redirect('index')
+    else:
+        form = SetPasswordForm(request.user)
+    return render(request, 'users/newUserLanding.html', {'form': form})
 
 
 @su_required

@@ -10,3 +10,4 @@ class UserAppForm(forms.ModelForm):
             'credit_card_num': 'Credit Card Number',
             'phone_num': 'Phone Number',
         }
+

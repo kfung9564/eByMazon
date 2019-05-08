@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'gui.html' %}
 
-</body>
-</html>
+{% block content %}
+{% if user.profile.is_new %}
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ form.as_p  }}</table>
+        <button type="submit">Change Password</button>
+    </form>
+{% else %}
+    <h2>This user is not new</h2>
+{% endif %}
+{% endblock %}
