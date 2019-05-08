@@ -1,6 +1,21 @@
 {% extends 'gui.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+    {% if user.profile.is_su %}
+        <h1>Add New Item</h1>
+    {% else %}
+        <h1>Suggest New Item</h1>
+    {% endif %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <input type="submit" value="Add">
+    </form>
+{% else %}
+    <h2>Please log in to suggest new items.</h2>
+{% endif %}
+
 <h1>Catalog</h1>
 {% if items.all %}
     {% for item in items %}
@@ -35,9 +50,3 @@
     <h2>No applications available at this time.</h2>
 {% endif %}
 {% endblock %}
-
- seller = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(null=False, max_length=255)
-    key_words = models.CharField(null=True, max_length=255)
-    is_biddable = models.BooleanField(default=False)
-    picture = models.URLField(null=False)

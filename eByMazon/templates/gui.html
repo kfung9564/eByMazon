@@ -11,6 +11,12 @@
     <ul id="nav">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'catalog' %}">Catalog</a></li>
+            {% if user.profile.is_su %}
+                <ul>
+                    <li><a href="{% url 'catalogreview' %}">Review Item Suggestions</a></li>
+                    <li><a href="{% url 'catalogblacklist' %}">Blacklist</a></li>
+                </ul>
+            {% endif %}
         {% if not user.is_authenticated %}
             <li><a href="{% url 'apply' %}">Apply</a></li>
             <li><a href="{% url 'login' %}">Log In</a></li>
