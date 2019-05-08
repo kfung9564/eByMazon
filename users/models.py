@@ -15,8 +15,12 @@ class UserApplication(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(null=False, default="", max_length=255)
+    credit_card_num = models.PositiveIntegerField(null=False, default=0)
+    address = models.CharField(null=False, default="", max_length=255)
+    phone_num = models.PositiveIntegerField(null=False, default=0)
+    is_new = models.BooleanField(default=True)
     is_su = models.BooleanField(default=False)
-
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

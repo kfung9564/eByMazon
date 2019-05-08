@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'gui.html' %}
 
-</body>
-</html>
+{% block content %}
+{% if applicant %}
+<h1>Approve {{ applicant.username }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+              <input type="submit" name="Approve" value="Confirm">
+              <input type="submit" name="Approve" value="Cancel">
+        </form>
+
+{% else %}
+    <h2>This application does not exist</h2>
+{% endif %}
+{% endblock %}
