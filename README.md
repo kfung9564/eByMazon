@@ -34,7 +34,7 @@ Create your own branch!!
 ## Tentative Checklist
 User Applications:
 - [x] submit to SUs the application to be an OU, which should include a unique id, the name, a valid credit card number, address, phone number.
-- [ ] Process applications and decide who can be OU and who should be denied. The initial password is the same as the id which the new OU is required to change the first time s/he logs in.
+- [x] Process applications and decide who can be OU and who should be denied. The initial password is the same as the id which the new OU is required to change the first time s/he logs in.
 
 Buying/Selling Items
 - [ ] Submit the bid to buy an available item.
