@@ -1,5 +1,36 @@
 # eByMazon
 
+## DJANGO NOTES
+Creating an “app” (this adds structure)
+python manage.py startapp appname
+Add it to the INSTALLED_APPS list in settings
+Usually of the format
+appname.apps.AppnameConfig
+If not, check the apps.py file
+
+create urls.py file
+link said file to the urls.py file in the main app
+
+Creating a “models” (this creates database tables)
+Go to models.py
+Django’s official website is a great and easy resource
+https://docs.djangoproject.com/en/2.1/ref/models/
+
+Register your completed model in admin.py
+- **python manage.py makemigrations**
+- **python manage.py migrate**
+
+If you’re finished, run
+- **python manage.py runserver**
+
+If there’s no superuser, run the command
+- **python manage.py createsuperuser**
+
+
+### DO NOT COMMIT TO MASTER BRANCH 
+Create your own branch!!
+
+
 ## Tentative Checklist
 User Applications:
 - [x] submit to SUs the application to be an OU, which should include a unique id, the name, a valid credit card number, address, phone number.
