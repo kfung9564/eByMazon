@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from items.models import Item
+from items.models import Item, ItemApplication, Blacklist
 from items.forms import AddItemForm
 from django.contrib import messages
 from users.decorators import su_required
@@ -8,52 +8,68 @@ from users.decorators import su_required
 
 
 def catalog(request):
+    items = Item.objects.all()
+
+    content = {'items': items}
+    return render(request, 'items/catalog.html', content)
+
+
+def apply(request):
     if request.method == 'POST':
         form = AddItemForm(request.POST)
-        if form.is_valid():
-            suggested = form.save(commit=False)
-            suggested.seller = request.user
+
+        if Blacklist.objects.filter(title=request.POST['title']).exists():
+            messages.success(request, 'Invalid item.')
+            isValid = False
+        else:
+            isValid = True
+
+        if form.is_valid() and isValid:
             if request.user.profile.is_su:
-                suggested.make_available()
-            suggested.save()
-            if request.user.profile.is_su:
+                Item.objects.create(seller=request.POST.get('seller'), title=request.POST.get('title'), key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
+
                 messages.success(request, 'New item added.')
             else:
-                messages.success(request, 'Item has been sent to suggestions.')
+                application = form.save(commit=False)
+                application.seller = request.user
+                application.save()
+
+                messages.success(request, 'Item has been sent to for review.')
             return redirect('index')
     else:
         form = AddItemForm()
 
-    items = Item.objects.filter(is_available=True)
-
-    content = {'items': items,
-               'form': form}
-    return render(request, 'items/catalog.html', content)
+    content = {'form': form}
+    return render(request, 'items/apply.html', content)
 
 
 @su_required
+# review applications
 def catalogreview(request):
+    apps = ItemApplication.objects.all()
+
     if request.method == 'POST':
         item_name = request.POST['item_name']
-        item = Item.objects.get(title=item_name)
+        application = ItemApplication.objects.get(title=item_name)
+
         if request.POST['confirmation'] == 'Approve':
-            item.make_available()
-            messages.success(request, item_name + ' has been added to the Catalog.')
+            Item.objects.create(seller=application.seller, title=application.title,
+                                key_words=application.key_words, picture=application.picture)
+
+            messages.success(request, item_name + ' has been approved and added to the Catalog.')
         else:
-            item.mark_blacklisted()
+            # add to blacklist
+            Blacklist.objects.create(seller=application.seller, title=application.title)
+            messages.success(request, item_name + ' has been denied and added to the Blacklist.')
 
-            messages.success(request, item_name + ' has been added to the Blacklist.')
-        item.save()
+        application.delete()
 
-    items = Item.objects.filter(is_available=False, is_blacklisted=False)
-    content = {'items': items,}
+    content = {'apps': apps}
     return render(request, 'items/catalogreview.html', content)
 
 
 @su_required
 def catalogblacklist(request):
-
-
-    items = Item.objects.filter(is_available=False, is_blacklisted=True)
-    content = {'items': items, }
+    blacklist = Blacklist.objects.all()
+    content = {'blacklist': blacklist, }
     return render(request, 'items/catalogblacklist.html', content)

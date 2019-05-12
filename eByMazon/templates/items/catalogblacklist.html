@@ -2,14 +2,9 @@
 
 {% block content %}
 <h1>Blacklisted Items</h1>
-{% if items.all %}
-    {% for item in items %}
+{% if blacklist.all %}
+    {% for item in blacklist %}
             <table>
-                <tr>
-                    <td colspan="2">
-                        <img src="{{ item.picture }}" style="width: 25%;" />
-                    </td>
-                </tr>
                 <tr>
                     <td>Product Name:</td>
                     <td>{{ item.title }}</td>
@@ -24,6 +19,6 @@
         <br />
     {% endfor %}
 {% else %}
-    <h2>No new suggestions.</h2>
+    <h2>No blacklisted items.</h2>
 {% endif %}
 {% endblock %}

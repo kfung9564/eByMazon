@@ -23,6 +23,7 @@
         {% endif %}
         {% if user.is_authenticated %}
             <li><a href="">Dashboard</a></li>
+            <li><a href="{% url 'itemapply' %}">Submit Item</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
         {% endif %}
         {% if user.profile.is_su %}

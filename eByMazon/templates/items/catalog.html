@@ -1,20 +1,6 @@
 {% extends 'gui.html' %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    {% if user.profile.is_su %}
-        <h1>Add New Item</h1>
-    {% else %}
-        <h1>Suggest New Item</h1>
-    {% endif %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table>{{ form.as_table }}</table>
-        <input type="submit" value="Add">
-    </form>
-{% else %}
-    <h2>Please log in to suggest new items.</h2>
-{% endif %}
 
 <h1>Catalog</h1>
 {% if items.all %}
@@ -33,20 +19,10 @@
                 <td>Seller:</td>
                 <td>{{ item.seller }}</td>
             </tr>
-            <tr>
-                <td>Price Nature</td>
-                <td>
-                    {% if item.is_biddable %}
-                        For Bidding
-                    {% else %}
-                        For Sale
-                    {% endif %}
-                </td>
-            </tr>
         </table>
         <br />
     {% endfor %}
 {% else %}
-    <h2>No applications available at this time.</h2>
+    <h2>No items available at this time.</h2>
 {% endif %}
 {% endblock %}

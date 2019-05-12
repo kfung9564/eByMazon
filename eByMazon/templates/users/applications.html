@@ -1,7 +1,7 @@
 {% extends 'gui.html' %}
 
 {% block content %}
-<h1>Applications</h1>
+<h1>Review User Applications</h1>
 {% if apps.all %}
     {% for app in apps %}
         <table>
@@ -33,6 +33,6 @@
         <br />
     {% endfor %}
 {% else %}
-    <h2>No applications available at this time.</h2>
+    <h2>No new applicants.</h2>
 {% endif %}
 {% endblock %}
