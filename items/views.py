@@ -29,12 +29,12 @@ def apply(request):
 
         if form.is_valid() and isValid:
             if request.user.profile.is_su:
-                Item.objects.create(seller=request.POST.get('seller'), title=request.POST.get('title'),
+                Item.objects.create(owner=request.POST.get('owner'), title=request.POST.get('title'),
                                     key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
                 messages.success(request, 'New item added.')
             else:
                 application = form.save(commit=False)
-                application.seller = request.user
+                application.owner = request.user
                 application.save()
 
                 messages.success(request, 'Item has been sent to for review.')
@@ -56,13 +56,13 @@ def catalogreview(request):
         application = ItemApplication.objects.get(title=item_name)
 
         if request.POST['confirmation'] == 'Approve':
-            Item.objects.create(seller=application.seller, title=application.title,
+            Item.objects.create(owner=application.owner, title=application.title,
                                 key_words=application.key_words, picture=application.picture)
 
             messages.success(request, item_name + ' has been approved and added to the Catalog.')
         else:
             # add to blacklist
-            Blacklist.objects.create(seller=application.seller, title=application.title)
+            Blacklist.objects.create(owner=application.owner, title=application.title)
             messages.success(request, item_name + ' has been denied and added to the Blacklist.')
 
         application.delete()

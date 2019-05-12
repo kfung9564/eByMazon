@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class ItemApplication(models.Model):
-    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(primary_key=True, null=False, max_length=255)
     key_words = models.CharField(null=True, max_length=255)
     picture = models.URLField(null=False)
@@ -13,7 +13,7 @@ class ItemApplication(models.Model):
 
 # Generic Item;
 class Item(models.Model):
-    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(primary_key=True, null=False, max_length=255)
     key_words = models.CharField(null=True, max_length=255)
     picture = models.URLField(null=False)
@@ -23,5 +23,5 @@ class Item(models.Model):
 
 
 class Blacklist(models.Model):
-    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(primary_key=True, null=False, max_length=255)
