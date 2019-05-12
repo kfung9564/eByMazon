@@ -18,16 +18,19 @@ def apply(request):
     if request.method == 'POST':
         form = AddItemForm(request.POST)
 
+        isValid = True
         if Blacklist.objects.filter(title=request.POST['title']).exists():
             messages.success(request, 'Invalid item.')
             isValid = False
         else:
-            isValid = True
+            if Item.objects.filter(title=request.POST['title']).exists():
+                messages.success(request, 'Item already exists.')
+                isValid = False
 
         if form.is_valid() and isValid:
             if request.user.profile.is_su:
-                Item.objects.create(seller=request.POST.get('seller'), title=request.POST.get('title'), key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
-
+                Item.objects.create(seller=request.POST.get('seller'), title=request.POST.get('title'),
+                                    key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
                 messages.success(request, 'New item added.')
             else:
                 application = form.save(commit=False)
