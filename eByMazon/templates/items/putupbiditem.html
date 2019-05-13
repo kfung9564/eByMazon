@@ -1,0 +1,20 @@
+{% extends 'gui.html' %}
+
+<script type="text/javascript" src="/my_admin/jsi18n/"></script>
+<script type="text/javascript" src="/media/admin/js/core.js"></script>
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Put {{ item.title }} up for bidding</h1>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>{{ bidForm.as_table }}</table>
+        <input type="submit" value="Put on sale">
+    </form>
+{% else %}
+    <h2>Please log in to edit items.</h2>
+{% endif %}
+
+{% endblock %}
+

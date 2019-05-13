@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from items.models import Item, ItemApplication, Blacklist
-from items.forms import AddItemForm, EditItemForm
+from django.urls import reverse
+
+from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice
+from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm
 from django.contrib import messages
 from users.decorators import su_required
 
@@ -29,7 +31,7 @@ def apply(request):
 
         if form.is_valid() and isValid:
             if request.user.profile.is_su:
-                Item.objects.create(owner=request.POST.get('owner'), title=request.POST.get('title'),
+                Item.objects.create(owner=request.user, title=request.POST.get('title'),
                                     key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
                 messages.success(request, 'New item added.')
             else:
@@ -67,6 +69,85 @@ def edititems(request):
                'item': item}
     return render(request, 'items/edititem.html', content)
 
+
+def sellitems(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    item_param = '{}?Title='+item.title
+    typeForm = SellItemForm(request.POST or None, instance=item)
+
+    if typeForm.is_valid():
+        typeForm.save(commit=False)
+
+        if request.POST['sellType'] == 'Fixed Price':
+            return redirect(item_param.format(reverse('sellfixed')))
+        elif request.POST['sellType'] == 'Auction':
+            return redirect(item_param.format(reverse('sellbid')))
+
+    content = {'typeForm': typeForm,
+               'item': item}
+    return render(request, 'items/sellitems.html', content)
+
+
+def sellfixed(request):
+    item = Item.objects.get(title=request.GET['Title'])
+
+    if request.method == 'POST':
+        fixedForm = FixedPriceForm(request.POST)
+
+        if fixedForm.is_valid():
+            fixedItem = fixedForm.save(commit=False)
+            item.sellType = 'Fixed'
+            item.save()
+            fixedItem.item = item
+            fixedItem.save()
+
+            messages.success(request, item.title+' has been put up for sale at a fixed price.')
+            return redirect('itemmanager')
+    else:
+        fixedForm = FixedPriceForm()
+
+    content = {'fixedForm': fixedForm,
+               'item': item}
+    return render(request, 'items/putupforfixeditem.html', content)
+
+
+def sellbid(request):
+    item = Item.objects.get(title=request.GET['Title'])
+
+    if request.method == 'POST':
+        bidForm = BidPriceForm(request.POST)
+
+        if bidForm.is_valid():
+            bidItem = bidForm.save(commit=False)
+            item.sellType = 'Bid'
+            item.save()
+            bidItem.item = item
+            bidItem.save()
+
+            messages.success(request, item.title + ' has been put up for bidding.')
+            return redirect('itemmanager')
+    else:
+        bidForm = BidPriceForm()
+
+    content = {'bidForm': bidForm,
+               'item': item}
+    return render(request, 'items/putupbiditem.html', content)
+
+
+def putoffsale(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    item.sellType = 'Offsale'
+    item.save()
+
+    if item.sellType == 'Fixed':
+        itemOnMarket = ItemFixedPrice.objects.filter(item=item)
+        itemOnMarket.delete()
+    else:
+        itemOnMarket = ItemBidPrice.objects.filter(item=item)
+        itemOnMarket.delete()
+
+    messages.success(request, item.title + ' has been put offsale.')
+    return redirect('itemmanager')
 
 
 @su_required

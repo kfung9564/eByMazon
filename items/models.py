@@ -1,9 +1,16 @@
 from datetime import datetime
 
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+
+def validate_date(date):
+    if date < datetime.now():
+        raise ValidationError("The date cannot be in the past!")
 
 
 class ItemApplication(models.Model):
@@ -32,8 +39,8 @@ class Blacklist(models.Model):
 
 
 class ItemFixedPrice(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=20, decimal_places=2)
+    item = models.OneToOneField(Item, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
 
 
 class Order(models.Model):
@@ -46,17 +53,18 @@ class Order(models.Model):
 
 
 class ItemBidPrice(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    startPrice = models.DecimalField(max_digits=20, decimal_places=2)
+    item = models.OneToOneField(Item, on_delete=models.CASCADE)
+    startPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
     startDate = models.DateTimeField(default=datetime.now, blank=True)
-    duration = models.TimeField()
+    endDate = models.DateTimeField(validators=[validate_date])
 
 
 class Bid(models.Model):
     item = models.ForeignKey(ItemBidPrice, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
-    bidPrice = models.DecimalField(max_digits=20, decimal_places=2)
+    bidPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
     bidDate = models.DateTimeField(default=datetime.now, blank=True)
 
     class Meta:
         unique_together = (("item", "bidder", "bidPrice"),)
+

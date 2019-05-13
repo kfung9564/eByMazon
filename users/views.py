@@ -49,7 +49,7 @@ def newuserlanding(request):
 @su_required
 def uapps(request):
     apps = UserApplication.objects.all()
-    return render(request, 'users/apply.html', {'apps': apps})
+    return render(request, 'users/applications.html', {'apps': apps})
 
 
 @su_required

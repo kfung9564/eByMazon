@@ -3,12 +3,12 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-    <h1>Edit {{ item.title }}</h1>
+    <h1>Sell {{ item.title }}</h1>
 
     <form action="" method="POST">
         {% csrf_token %}
-        <table>{{ form.as_table }}</table>
-        <input type="submit" value="Save">
+        <table>{{ typeForm.as_table }}</table>
+        <input type="submit" value="Select">
     </form>
 {% else %}
     <h2>Please log in to edit items.</h2>
