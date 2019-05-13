@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from items.models import Item, ItemApplication, Blacklist
-from items.forms import AddItemForm
+from items.forms import AddItemForm, EditItemForm
 from django.contrib import messages
 from users.decorators import su_required
 
@@ -44,6 +44,29 @@ def apply(request):
 
     content = {'form': form}
     return render(request, 'items/apply.html', content)
+
+
+def manageitems(request):
+    ownedItems = Item.objects.filter(owner=request.user)
+
+    content = {'ownedItems': ownedItems}
+    return render(request, 'items/itemmanager.html', content)
+
+
+def edititems(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    form = EditItemForm(request.POST or None, instance=item)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Item information successfully updated!")
+
+        return redirect('itemmanager')
+
+    content = {'form': form,
+               'item': item}
+    return render(request, 'items/edititem.html', content)
+
 
 
 @su_required

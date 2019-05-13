@@ -1,0 +1,17 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Edit {{ item.title }}</h1>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <input type="submit" value="Submit">
+    </form>
+{% else %}
+    <h2>Please log in to edit items.</h2>
+{% endif %}
+
+{% endblock %}

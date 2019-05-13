@@ -1,0 +1,31 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Manage Items</h1>
+{% if ownedItems.all %}
+    {% for ownedItem in ownedItems %}
+        <table>
+            <tr>
+                <td colspan="2">
+                    <img src="{{ ownedItem.picture }}" style="width: 25%;" />
+                </td>
+            </tr>
+            <tr>
+                <td>Product Name:</td>
+                <td>{{ ownedItem.title }}</td>
+            </tr>
+            <tr>
+                <td>Keywords:</td>
+                <td>{{ ownedItem.key_words }}</td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
+                
+            </tr>
+        </table>
+        <br />
+    {% endfor %}
+{% else %}
+    <h2>No new applicants.</h2>
+{% endif %}
+{% endblock %}

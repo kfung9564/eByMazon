@@ -4,7 +4,7 @@ from . import views
 # users/
 
 urlpatterns = [
-    # path(URL_NAME, views.VIEW_NAME, HTML_FILE_NAME)
+    # path(URL_NAME, views.VIEW_NAME, NAME)
 
     path('apply/', views.apply, name='apply'),
     path('landing/', views.newuserlanding, name='newUserLanding'),
