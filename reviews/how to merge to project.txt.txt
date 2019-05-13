@@ -1,0 +1,17 @@
+#in project's folder:
+in urls.py file add:
+
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from . import views 	
+
+
+path('r', include('reviews.urls')),
+
+
+#in settings.py:
+
+INSTALLED_APPS add 'reviews',
