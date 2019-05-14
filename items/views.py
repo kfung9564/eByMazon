@@ -32,7 +32,8 @@ def apply(request):
         if form.is_valid() and isValid:
             if request.user.profile.is_su:
                 Item.objects.create(owner=request.user, title=request.POST.get('title'),
-                                    key_words=request.POST.get('key_words'), picture=request.POST.get('picture'))
+                                    key_words=request.POST.get('key_words'), description=request.POST.get('description'),
+                                    picture=request.POST.get('picture'))
                 messages.success(request, 'New item added.')
             else:
                 application = form.save(commit=False)

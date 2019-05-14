@@ -17,6 +17,7 @@ class ItemApplication(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(primary_key=True, null=False, max_length=255)
     key_words = models.CharField(null=True, max_length=255)
+    description = models.TextField(null=True)
     picture = models.URLField(null=False)
 
 
@@ -25,6 +26,7 @@ class Item(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(primary_key=True, null=False, max_length=255)
     key_words = models.CharField(null=True, max_length=255)
+    description = models.TextField(null=True)
     picture = models.URLField(null=False)
     sellType = models.CharField(default='Offsale', max_length=255)
     uploadDate = models.DateTimeField(default=datetime.now, blank=True)

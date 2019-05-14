@@ -21,6 +21,10 @@
                     <td>{{ ownedItem.key_words }}</td>
                 </tr>
                 <tr>
+                    <td>Description:</td>
+                    <td>{{ ownedItem.description }}</td>
+                </tr>
+                <tr>
                     <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
                     <td><a href="{% url 'sellitems' %}?Title={{ ownedItem.title }}"><button>Sell</button></a></td>
                 </tr>
@@ -46,6 +50,10 @@
                     <td>{{ ownedItem.key_words }}</td>
                 </tr>
                 <tr>
+                    <td>Description:</td>
+                    <td>{{ ownedItem.description }}</td>
+                </tr>
+                <tr>
                     <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
                     <td><a href="{% url 'putoffsale' %}?Title={{ ownedItem.title }}"><button>Put Offsale</button></a></td>
                 </tr>
@@ -69,6 +77,10 @@
                 <tr>
                     <td>Keywords:</td>
                     <td>{{ ownedItem.key_words }}</td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td>{{ ownedItem.description }}</td>
                 </tr>
                 <tr>
                     <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
