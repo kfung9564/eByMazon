@@ -10,9 +10,11 @@ from users.decorators import su_required
 
 
 def catalog(request):
-    items = Item.objects.all()
+    fixedPriceItems = ItemFixedPrice.objects.all()
+    bidPriceItems = ItemBidPrice.objects.all()
 
-    content = {'items': items}
+    content = {'fixedPriceItems': fixedPriceItems,
+               'bidPriceItems': bidPriceItems}
     return render(request, 'items/catalog.html', content)
 
 

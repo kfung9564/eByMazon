@@ -3,61 +3,81 @@
 {% block content %}
 
 <h1>Catalog</h1>
-        <h1>For Fixed Price Items</h1>
-        {% if ownedItem.sellType == 'Fixed' %}
+    <h1>Shopping</h1>
+    {% if fixedPriceItems.all %}
+        {% for fixedPriceItem in fixedPriceItems %}
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ ownedItem.picture }}" style="width: 25%;" />
+                        <img src="{{ fixedPriceItem.item.picture }}" style="width: 25%;" />
                     </td>
                 </tr>
                 <tr>
                     <td>Product Name:</td>
-                    <td>{{ ownedItem.title }}</td>
+                    <td>{{ fixedPriceItem.item.title }}</td>
+                </tr>
+                <tr>
+                    <td>Sold by:</td>
+                    <td>{{ fixedPriceItem.item.owner }}</td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>{{ fixedPriceItem.price }}</td>
                 </tr>
                 <tr>
                     <td>Keywords:</td>
-                    <td>{{ ownedItem.key_words }}</td>
+                    <td>{{ fixedPriceItem.item.key_words }}</td>
                 </tr>
                 <tr>
                     <td>Description:</td>
-                    <td>{{ ownedItem.description }}</td>
+                    <td>{{ fixedPriceItem.item.description }}</td>
                 </tr>
                 <tr>
-                    <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
-                    <td><a href="{% url 'putoffsale' %}?Title={{ ownedItem.title }}"><button>Cancel Sale</button></a></td>
-                </tr>
-            </table>
-        {% else %}
-            <h2>No items on sale for fixed price.</h2>
-        {% endif %}
 
-        <h1>On Auction Items</h1>
-        {% if ownedItem.sellType == 'Bid' %}
+                </tr>
+            </table>
+        {% endfor %}
+    {% else %}
+        <h2>No items on sale for fixed price.</h2>
+    {% endif %}
+
+
+    <h1>Auction</h1>
+    {% if bidPriceItems.all %}
+        {% for bidPriceItem in bidPriceItems %}
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ ownedItem.picture }}" style="width: 25%;" />
+                        <img src="{{ bidPriceItem.item.picture }}" style="width: 25%;" />
                     </td>
                 </tr>
                 <tr>
                     <td>Product Name:</td>
-                    <td>{{ ownedItem.title }}</td>
+                    <td>{{ bidPriceItem.item.title }}</td>
+                </tr>
+                <tr>
+                    <td>Sold by:</td>
+                    <td>{{ bidPriceItem.item.owner }}</td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>{{ bidPriceItem.price }}</td>
                 </tr>
                 <tr>
                     <td>Keywords:</td>
-                    <td>{{ ownedItem.key_words }}</td>
+                    <td>{{ bidPriceItem.item.key_words }}</td>
                 </tr>
                 <tr>
                     <td>Description:</td>
-                    <td>{{ ownedItem.description }}</td>
+                    <td>{{ bidPriceItem.item.description }}</td>
                 </tr>
                 <tr>
-                    <td><a href="{% url 'edititems' %}?Title={{ ownedItem.title }}"><button>Edit</button></a></td>
-                    <td><a href="{% url 'putoffsale' %}?Title={{ ownedItem.title }}"><button>Cancel Sale</button></a></td>
+
                 </tr>
             </table>
-        {% else %}
-            <h2>No items on sale for bidding.</h2>
-        {% endif %}
+        {% endfor %}
+    {% else %}
+        <h2>No items on sale for bidding.</h2>
+    {% endif %}
+
 {% endblock %}
