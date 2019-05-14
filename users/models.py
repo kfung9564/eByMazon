@@ -26,7 +26,7 @@ class Profile(models.Model):
     is_su = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 @receiver(post_save, sender=User)

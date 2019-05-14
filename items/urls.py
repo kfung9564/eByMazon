@@ -13,5 +13,8 @@ urlpatterns = [
     path('manage/sell/fixed', views.sellfixed, name='sellfixed'),
     path('manage/sell/bid', views.sellbid, name='sellbid'),
     path('manage/offsale', views.putoffsale, name = 'putoffsale'),
+    path('manage/itemlist/', views.itemlist, name='itemlist'),
+    path('manage/removeitem/', views.removeitem, name='removeitem'),
+    path('manage/suedit/', views.su_edititem, name='suedit'),
     path('', views.catalog, name='catalog'),
 ]

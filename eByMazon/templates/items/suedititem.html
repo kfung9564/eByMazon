@@ -1,0 +1,17 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+
+{% if user.profile.is_su %}
+    <h1>Edit {{ item.title }}</h1>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <input type="submit" value="Save">
+    </form>
+{% else %}
+    <h2>You do not have permission to edit.</h2>
+{% endif %}
+
+{% endblock %}

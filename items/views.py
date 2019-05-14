@@ -50,9 +50,13 @@ def apply(request):
 
 
 def manageitems(request):
-    ownedItems = Item.objects.filter(owner=request.user)
+    ownedOffsaleItems = Item.objects.filter(owner=request.user, sellType='Offsale')
+    ownedFixedItems = Item.objects.filter(owner=request.user, sellType='Fixed')
+    ownedBidItems = Item.objects.filter(owner=request.user, sellType='Bid')
 
-    content = {'ownedItems': ownedItems}
+    content = {'ownedOffsaleItems': ownedOffsaleItems,
+               'ownedFixedItems': ownedFixedItems,
+               'ownedBidItems': ownedBidItems}
     return render(request, 'items/itemmanager.html', content)
 
 
@@ -181,3 +185,44 @@ def catalogblacklist(request):
     blacklist = Blacklist.objects.all()
     content = {'blacklist': blacklist, }
     return render(request, 'items/catalogblacklist.html', content)
+
+
+@su_required
+def itemlist(request):
+    items = Item.objects.all()
+
+    content = {'items': items}
+    return render(request, 'items/allitemlist.html', content)
+
+
+@su_required
+def removeitem(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    if request.method == 'POST':
+        if request.POST['Delete'] == 'Confirm':
+            item_name = item.title
+            Blacklist.objects.create(owner=item.owner, title=item.title)
+            item.delete()
+
+            messages.success(request, item_name + ' has been deleted and added to the Blacklist.')
+        return redirect('itemlist')
+
+    content = {'item': item}
+    return render(request, 'items/removeitem.html', content)
+
+
+@su_required
+def su_edititem(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    form = EditItemForm(request.POST or None, instance=item)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Item information successfully updated!")
+
+        return redirect('itemlist')
+
+    content = {'form': form,
+               'item': item}
+    return render(request, 'items/suedititem.html', content)
+
