@@ -25,11 +25,19 @@ class Profile(models.Model):
     is_new = models.BooleanField(default=True)
     is_su = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.user
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+        if instance.is_superuser:
+            instance.profile.is_su = True
+            instance.profile.is_new = False
+            instance.profile.save()
 
 
 @receiver(post_save, sender=User)
