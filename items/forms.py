@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.admin import widgets
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
-
+from tempus_dominus.widgets import DatePicker, TimePicker, DateTimePicker
 from .models import Item, ItemApplication, ItemFixedPrice, ItemBidPrice
 
 
@@ -41,7 +41,23 @@ class FixedPriceForm(forms.ModelForm):
 
 
 class BidPriceForm(forms.ModelForm):
-    endDate = forms.DateTimeField(input_formats=['%Y-%m-%d %H:%M:%S'], widget=forms.widgets.DateTimeInput(attrs={'placeholder': "DD/MM/YY HH:MM:SS"}))
+    endDate = forms.DateTimeField(
+        widget=DateTimePicker(
+            options={
+                'minDate': (
+                    datetime.date.today()
+                ).strftime(
+                    '%Y-%m-%d'
+                ),  # Today
+                'useCurrent': True,
+                'collapse': True,
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+            }
+        ),
+    )
 
     class Meta:
         model = ItemBidPrice
