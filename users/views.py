@@ -59,7 +59,8 @@ def uappapprove(request):
         if request.POST['Approve'] == 'Confirm':
             User.objects.create(username=applicant.username, password=make_password(applicant.username))
             newUser = User.objects.get(username=applicant.username)
-            newUser.profile.address=applicant.address
+            newUser.profile.address = applicant.address
+            newUser.profile.state = applicant.state
             newUser.profile.credit_card_num = applicant.credit_card_num
             newUser.profile.name = applicant.name
             newUser.profile.phone_num = applicant.phone_num

@@ -5,11 +5,13 @@ from django.dispatch import receiver
 
 # Create your models here.
 
+
 class UserApplication(models.Model):
     username = models.CharField(unique=True, null=False, max_length=255)
     name = models.CharField(null=False, max_length=255)
     credit_card_num = models.PositiveIntegerField(null=False)
     address = models.CharField(null=False, max_length=255)
+    state = models.CharField(null=False, default="New York", max_length=255)
     phone_num = models.PositiveIntegerField(null=False)
 
 
@@ -18,9 +20,11 @@ class Profile(models.Model):
     name = models.CharField(null=False, default="", max_length=255)
     credit_card_num = models.PositiveIntegerField(null=False, default=0)
     address = models.CharField(null=False, default="", max_length=255)
+    state = models.CharField(null=False, default="New York", max_length=255)
     phone_num = models.PositiveIntegerField(null=False, default=0)
     is_new = models.BooleanField(default=True)
     is_su = models.BooleanField(default=False)
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
