@@ -43,9 +43,9 @@ Buying/Selling Items
 - [ ] The tax of every sold item is automatically evaluated based on the address of the buying OU (have a dictionary keeping the tax rate for different states).
 
 Item Applications
-- [ ] Submit to SUs the information (title, key words, price nature, at least one picture) of the item(s) s/he wants to sell. 
-- [ ] Process item information the OUs submitted intending to sell, some can be publicly available on the platform and some may be denied with justifications. An OU whose item is denied will be warned once.
-- [ ] Items removed from the system by SUs will be blacklisted from system. 
+- [x] Submit to SUs the information (title, key words, price nature, at least one picture) of the item(s) s/he wants to sell. 
+- [x] Process item information the OUs submitted intending to sell, some can be publicly available on the platform and some may be denied with justifications. An OU whose item is denied will be warned once.
+- [x] Items removed from the system by SUs will be blacklisted from system. 
 
 Complaints
 - [ ] File complaints to SUs against certain OUs whose item or payment has some problem or explain to the SU about any complaint received from others.
