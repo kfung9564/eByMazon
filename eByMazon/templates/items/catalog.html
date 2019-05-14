@@ -9,7 +9,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ fixedPriceItem.item.picture }}" style="width: 25%;" />
+                        <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
                     </td>
                 </tr>
                 <tr>
@@ -22,15 +22,7 @@
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td>{{ fixedPriceItem.price }}</td>
-                </tr>
-                <tr>
-                    <td>Keywords:</td>
-                    <td>{{ fixedPriceItem.item.key_words }}</td>
-                </tr>
-                <tr>
-                    <td>Description:</td>
-                    <td>{{ fixedPriceItem.item.description }}</td>
+                    <td>${{ fixedPriceItem.price }}</td>
                 </tr>
                 <tr>
 
@@ -48,7 +40,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ bidPriceItem.item.picture }}" style="width: 25%;" />
+                        <img src="{{ bidPriceItem.item.picture }}" class="itemicons" />
                     </td>
                 </tr>
                 <tr>
@@ -61,15 +53,7 @@
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td>{{ bidPriceItem.price }}</td>
-                </tr>
-                <tr>
-                    <td>Keywords:</td>
-                    <td>{{ bidPriceItem.item.key_words }}</td>
-                </tr>
-                <tr>
-                    <td>Description:</td>
-                    <td>{{ bidPriceItem.item.description }}</td>
+                    <td>${{ bidPriceItem.startPrice }}</td>
                 </tr>
                 <tr>
 
