@@ -49,10 +49,10 @@ Item Applications
 
 Complaints
 - [x] File complaints to SUs against certain OUs whose item or payment has some problem or explain to the SU about any complaint received from others.
-- [ ] Process complaints: either removed or saved as justified ones after communicating with the OU who was complained.
+- [x] Process complaints: either removed or saved as justified ones after communicating with the OU who was complained.
 
 Grading Users
-- [ ] Grade an OU after buying an item from him/her, 0 being the worst and 5 being the best. An OU who has submitted too many low ratings, three 0 or 1 ratings in a row, or high ratings, three 5 ratings in a row, will be warned by SU as possible reckless graders.
+- [x] Grade an OU after buying an item from him/her, 0 being the worst and 5 being the best. An OU who has submitted too many low ratings, three 0 or 1 ratings in a row, or high ratings, three 5 ratings in a row, will be warned by SU as possible reckless graders.
 - [ ] An OU will become a VIP OU if her/his rating is >= 4 (by at least 3 different OUs) or spent more than $500 and without warnings, any VIP will receive 5% discount when checking out. A VIP is moved to ordinary OU if his/her rating is below 4 automatically or received one warning.
 - [ ] Send warnings to OUs who received two justified complaints or the average grade are lower than 2 with at least 3 different evaluators, should an OU receive two warnings this OU should be suspended from the system. A suspended OU will be notified when s/he logs in and can choose to appeal or resign. The appeal can be either approved or denied (then the user is removed).
 
