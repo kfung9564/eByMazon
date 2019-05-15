@@ -2,6 +2,7 @@ import decimal
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -112,6 +113,9 @@ def confirmorder(request):
                 2)
             totalPrice = round(tax + decimal.Decimal(fixedItem.price), 2)
 
+            if buyer.profile.is_vip:
+                totalPrice = round(decimal.Decimal(totalPrice) * decimal.Decimal(0.95), 2)
+
             Transaction.objects.create(seller=request.user.username,
                                        buyer=buyer.username,
                                        title=item.title,
@@ -119,8 +123,12 @@ def confirmorder(request):
                                        originalPrice=fixedItem.price,
                                        paidPrice=totalPrice)
 
-            buyer.profile.spent = round(decimal.Decimal(buyer.profile.spent) + totalPrice, 2)
+            buyer.profile.spent = round(decimal.Decimal(buyer.profile.spent) + decimal.Decimal(totalPrice), 2)
             buyer.profile.save()
+
+            if buyer.profile.spent > 500:
+                buyer.profile.is_vip = True
+                buyer.profile.save()
 
             messages.success(request, item.title + ' has been sold to ' + item.owner.profile.name + '.')
         return redirect('itemmanager')
@@ -209,6 +217,9 @@ def confirmnotfirst(request):
                     2)
                 totalPrice = round(tax + decimal.Decimal(fixedItem.price), 2)
 
+                if buyer.profile.is_vip:
+                    totalPrice = round(decimal.Decimal(totalPrice)*decimal.Decimal(0.95), 2)
+
                 Transaction.objects.create(seller=request.user.username,
                                            buyer=buyer.username,
                                            title=item.title,
@@ -216,8 +227,12 @@ def confirmnotfirst(request):
                                            originalPrice=fixedItem.price,
                                            paidPrice=totalPrice)
 
-                buyer.profile.spent = round(decimal.Decimal(buyer.profile.spent) + totalPrice, 2)
+                buyer.profile.spent = round(decimal.Decimal(buyer.profile.spent) + decimal.Decimal(totalPrice), 2)
                 buyer.profile.save()
+
+                if buyer.profile.spent > 500:
+                    buyer.profile.is_vip = True
+                    buyer.profile.save()
 
                 item.sellType = 'Offsale'
                 item.owner = order.buyer
@@ -304,6 +319,9 @@ def fixeditemorder(request):
     censoredCardNum = '************' + request.user.profile.credit_card_num[12:]
     tax = round(decimal.Decimal(stateTax.get(request.user.profile.state)) * decimal.Decimal(0.01) * fixedPriceItem.price, 2)
     totalPrice = round(tax + fixedPriceItem.price, 2)
+
+    if request.user.profile.is_vip:
+        totalPrice = round(decimal.Decimal(totalPrice) * decimal.Decimal(0.95), 2)
 
     if request.method == 'POST':
         if request.POST['Order'] == 'Place Order':
@@ -427,7 +445,15 @@ def placebidpage(request):
                 2)
             totalPrice = round(tax + decimal.Decimal(request.POST.get('bidPrice')), 2)
 
-            messages.success(request, "Total price after " + request.user.profile.state + " state tax is: " + str(totalPrice))
+            if request.user.profile.is_vip:
+                totalPrice = round(decimal.Decimal(totalPrice) * decimal.Decimal(0.95), 2)
+                messages.success(request, "Total price after " + request.user.profile.state +
+                                 " state tax and VIP discount is: " + str(
+                    totalPrice))
+            else:
+                messages.success(request, "Total price after " + request.user.profile.state + " state tax is: " + str(
+                    totalPrice))
+
             content = {'highest': highest,
                        'form': form,
                        'bidPriceItem': bidPriceItem,
@@ -533,6 +559,9 @@ def confirmwinner(request):
                 2)
             totalPrice = round(tax + decimal.Decimal(bid.bidPrice), 2)
 
+            if bidder.profile.is_vip:
+                totalPrice = round(decimal.Decimal(totalPrice) * decimal.Decimal(0.95), 2)
+
             Transaction.objects.create(seller=request.user.username,
                                        buyer=bidder.username,
                                        title=item.title,
@@ -540,8 +569,12 @@ def confirmwinner(request):
                                        originalPrice=bid.bidPrice,
                                        paidPrice=totalPrice)
 
-            bidder.profile.spent = round(decimal.Decimal(bidder.profile.spent) + totalPrice, 2)
+            bidder.profile.spent = round(decimal.Decimal(bidder.profile.spent) + decimal.Decimal(totalPrice), 2)
             bidder.profile.save()
+
+            if bidder.profile.spent > 500:
+                bidder.profile.is_vip = True
+                bidder.profile.save()
 
             item.sellType = 'Offsale'
             item.owner = bidder
@@ -640,6 +673,9 @@ def confirmnotwinner(request):
                     2)
                 totalPrice = round(tax + decimal.Decimal(bid.bidPrice), 2)
 
+                if bidder.profile.is_vip:
+                    totalPrice = round(decimal.Decimal(totalPrice)*decimal.Decimal(0.95), 2)
+
                 Transaction.objects.create(seller=request.user.username,
                                            buyer=bidder.username,
                                            title=item.title,
@@ -647,8 +683,12 @@ def confirmnotwinner(request):
                                            originalPrice=bid.bidPrice,
                                            paidPrice=totalPrice)
 
-                bidder.profile.spent = round(decimal.Decimal(bidder.profile.spent) + totalPrice, 2)
+                bidder.profile.spent = round(decimal.Decimal(bidder.profile.spent) + decimal.Decimal(totalPrice), 2)
                 bidder.profile.save()
+
+                if bidder.profile.spent > 500:
+                    bidder.profile.is_vip = True
+                    bidder.profile.save()
 
                 item.sellType = 'Offsale'
                 item.owner = bidder
@@ -815,6 +855,12 @@ def rateuser(request):
         rateform = RatingForm(request.POST)
         if rateform.is_valid():
             Rating.objects.create(seller=seller, rater=rater, grade=request.POST['grade'], comment=request.POST['comment'])
+
+            distinctRating = Rating.objects.filter(seller=seller).values('rater').distinct()
+            if distinctRating.count() >= 3:
+                if distinctRating.aggregate(Avg('grade')) >= 4:
+                    seller.profile.is_vip = True
+                    seller.profile.save()
 
             messages.success(request, "Rating submitted!")
             return redirect('index')

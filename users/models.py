@@ -48,6 +48,7 @@ class Profile(models.Model):
     state = models.CharField(null=False, default="New York", max_length=255)
     phone_num = PhoneNumberField(null=False, blank=False)
     spent = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)], default=0)
+    is_vip = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
     is_su = models.BooleanField(default=False)
 

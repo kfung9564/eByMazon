@@ -17,6 +17,8 @@
     <h3>{{ user }}</h3>
     {% if user.profile.is_su %}
         <h3>Super User</h3>
+    {% elif user.profile.is_vip %}
+        <h3>VIP User</h3>
     {% elif user.is_authenticated %}
         <h3>Ordinary User</h3>
     {% else %}

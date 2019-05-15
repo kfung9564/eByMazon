@@ -64,7 +64,11 @@
                 <td>+ ${{ tax }}</td>
             </tr>
             <tr>
-                <td>Total Price:</td>
+                {% if user.profile.is_vip %}
+                    <td>Total Price with VIP discount:</td>
+                {% else %}
+                    <td>Total Price:</td>
+                {% endif %}
                 <td>${{ totalPrice }}</td>
             </tr>
         </table>
