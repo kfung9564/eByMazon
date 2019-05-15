@@ -6,16 +6,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import UserAppForm, UserUpdateForm
-from .models import UserApplication, Profile
+from .models import UserApplication, Profile, UserBlacklist, UserMessages
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
-from django.views.generic import (
-    ListView,
-    DetailView,
-    CreateView,
-    UpdateView,
-    DeleteView
-    )
 
 def apply(request):
     if request.method == 'POST':
@@ -76,17 +69,21 @@ def newuserlanding(request):
         form = SetPasswordForm(request.user)
     return render(request, 'users/newUserLanding.html', {'form': form})
 
+
 @login_required
 def EditProfile(request):
     try:
         if request.method == 'POST':
-            u_form = UserUpdateForm(request.POST, instance = request.user.profile)
+            u_form = UserUpdateForm(request.POST, instance=request.user.profile)
             if u_form.is_valid():
                 u_form.save()
                 messages.success(request, "Your account has been updated !")
                 return redirect('index')
         else:
-            u_form = UserUpdateForm(instance = request.user)
+            u_form = UserUpdateForm(instance=request.user, initial={'credit_card_num': request.user.profile.credit_card_num,
+                                                                    'address': request.user.profile.address,
+                                                                    'state': request.user.profile.state,
+                                                                    'phone_num': request.user.profile.phone_num})
 
         context = {
             'u_form' : u_form,
