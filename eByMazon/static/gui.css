@@ -17,5 +17,11 @@
 .catalogitem {
     text-decoration: none;
     color: #000;
-    display: inline-block;.
+    display: inline-block;
+}
+
+.messagesblock {
+    text-decoration: none;
+    color: #000;
+    display: block;
 }

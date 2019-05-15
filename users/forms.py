@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import Select
 
-from .models import UserApplication, Profile, Rating
+from .models import UserApplication, Profile, Rating, UserMessages
 from phonenumber_field.formfields import PhoneNumberField
 from .models import UserApplication
 
@@ -153,3 +153,9 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ['grade', 'comment']
+
+
+class SendMessage(forms.ModelForm):
+    class Meta:
+        model = UserMessages
+        fields = ['title', 'message']

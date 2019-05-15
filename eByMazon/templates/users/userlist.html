@@ -1,0 +1,25 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+
+{% if Users.all %}
+    <h1>User list</h1>
+    {% for User in Users %}
+        <table>
+            <tr>
+                <td>User:</td>
+                <td>{{ User.username }}</td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td>{{ User.profile.name }}</td>
+            </tr>
+        </table>
+        <a href="{% url 'sendmessages' %}?Username={{ User.username }}" >Compose Message</a>
+        <br /><br />
+    {% endfor %}
+{% else %}
+    <h2>No users.</h2>
+{% endif %}
+
+{% endblock %}

@@ -208,7 +208,7 @@ def confirmnotfirst(request):
         if form.is_valid():
             if request.POST['Confirm'] == 'Confirm':
                 msg = 'Your ' + item.title + ' order was denied due to the following reasons: ' + request.POST.get('message')
-                UserMessages.objects.create(sender=System, recipient=firstOrder.buyer, message=msg)
+                UserMessages.objects.create(sender=System, recipient=firstOrder.buyer, title='Order Denied', message=msg)
 
                 tax = round(
                     decimal.Decimal(stateTax.get(buyer.profile.state))
@@ -664,7 +664,7 @@ def confirmnotwinner(request):
         if form.is_valid():
             if request.POST['Confirm'] == 'Confirm':
                 msg = 'Your ' + item.title + ' bid was denied due to the following reasons: ' + request.POST.get('message')
-                UserMessages.objects.create(sender=System, recipient=winner.bidder, message=msg)
+                UserMessages.objects.create(sender=System, recipient=winner.bidder, title='Bid Denied', message=msg)
 
                 tax = round(
                     decimal.Decimal(stateTax.get(bidder.profile.state))

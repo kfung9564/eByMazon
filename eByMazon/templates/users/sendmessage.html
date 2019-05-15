@@ -1,0 +1,16 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Compose Message</h1>
+{% if user %}
+<form method="POST">
+    {% csrf_token %}
+    <h2>TO: {{ user.profile.name }} < {{ user.username }} ></h2>
+    <table>{{ form.as_table }}
+        <td><input type="submit" name="send" value="Send Message"></td>
+    </table>
+</form>
+{% else %}
+    <h2>No recipient</h2>
+{% endif %}
+{% endblock %}
