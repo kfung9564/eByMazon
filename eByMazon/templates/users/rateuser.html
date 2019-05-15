@@ -1,0 +1,14 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+{% if seller %}
+<h1>Rate {{ seller.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ rateform.as_table }}</table>
+        <button type="submit">Rate</button>
+    </form>
+{% else %}
+    <h2>This seller does not exist</h2>
+{% endif %}
+{% endblock %}

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import Select
 
-from .models import UserApplication, Profile
+from .models import UserApplication, Profile, Rating
 from phonenumber_field.formfields import PhoneNumberField
 from .models import UserApplication
 
@@ -147,3 +147,9 @@ class UserSelectForm(forms.Form):
     username = forms.ModelChoiceField(queryset=User.objects.all(),
                                       widget=Select(attrs={'class': 'form-control'},),
                                       label='Username')
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['grade', 'comment']

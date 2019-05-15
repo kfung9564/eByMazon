@@ -13,7 +13,8 @@ from django.contrib import messages
 from users.decorators import su_required
 
 # Create your views here.
-from users.models import UserMessages, Transaction
+from users.forms import RatingForm
+from users.models import UserMessages, Transaction, Rating
 
 
 def catalog(request):
@@ -804,6 +805,25 @@ def putoffsale(request):
 
     messages.success(request, item.title + ' has been put off sale.')
     return redirect('itemmanager')
+
+
+def rateuser(request):
+    seller = User.objects.get(username=request.GET['Username'])
+    rater = request.user
+
+    if request.method == 'POST':
+        rateform = RatingForm(request.POST)
+        if rateform.is_valid():
+            Rating.objects.create(seller=seller, rater=rater, grade=request.POST['grade'], comment=request.POST['comment'])
+
+            messages.success(request, "Rating submitted!")
+            return redirect('index')
+    else:
+        rateform = RatingForm()
+
+    content = {'rateform': rateform,
+               'seller': seller}
+    return render(request, 'users/rateuser.html', content)
 
 
 @su_required

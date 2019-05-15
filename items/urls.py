@@ -7,6 +7,7 @@ urlpatterns = [
     path('blacklist/', views.catalogblacklist, name='catalogblacklist'),
     path('application/', views.catalogreview, name='catalogreview'),
     path('apply/', views.apply, name='itemapply'),
+    path('rate/', views.rateuser, name='rateuser'),
     path('manage/', views.manageitems, name='itemmanager'),
     path('manage/edit/', views.edititems, name='edititems'),
     path('manage/sell/', views.sellitems, name='sellitems'),

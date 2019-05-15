@@ -31,6 +31,7 @@
                 <td>{{ purchase.date }}</td>
             </tr>
         </table>
+        <a href="{% url 'rateuser' %}?Username={{ purchase.seller }}" >Rate Seller</a>
         <br />
     {% endfor %}
 {% else %}

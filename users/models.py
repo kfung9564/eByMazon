@@ -1,4 +1,5 @@
-from django.core.validators import MaxLengthValidator, MinLengthValidator, RegexValidator, MinValueValidator
+from django.core.validators import MaxLengthValidator, MinLengthValidator, RegexValidator, MinValueValidator, \
+    MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -9,6 +10,7 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
+from items.models import Item
 
 
 class UserApplication(models.Model):
@@ -72,6 +74,16 @@ class Transaction(models.Model):
     sellType = models.CharField(null=False, max_length=255)
     originalPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
     paidPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
+    date = models.DateTimeField(default=datetime.now, blank=True)
+
+
+class Rating(models.Model):
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller')
+    rater = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rater')
+    grade = models.DecimalField(default=0, max_digits=2, decimal_places=1, validators=[MaxValueValidator(5.1),
+                                                                         MinValueValidator(-0.9)]
+                                )
+    comment = models.TextField(null=True)
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 

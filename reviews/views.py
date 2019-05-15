@@ -9,14 +9,17 @@ from django.views.generic import (
 	)
 from .models import review
 
+
 class ReviewListView(ListView):
 	model = review
 	template_name = 'reviews/home.html' #<app>/<model>_<viewtype>.html
 	context_object_name = 'reviews'
 	ordering = ['-date_posted']
 
+
 class ReviewDetailView(DetailView):
 	model = review
+
 
 class ReviewCreateView(LoginRequiredMixin, CreateView):
 	model = review
