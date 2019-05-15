@@ -37,7 +37,17 @@
             <li><a href="{% url 'ublacklist' %}">User Blacklist</a></li>
             <li><a href="{% url 'usertransactions' %}">User Transactions</a></li>
         {% endif %}
-        <input type="text" placeholder="Search...">
+        <form name="searchform" method="GET" action="(% url 'search' %)">
+            {% csrf_token %}
+            <input type="text" name="search" placeholder="Search...">
+        </form>
+
+<!--        <form id="searchform" action="{{ request.get_host }}/items/search/" method="GET">-->
+<!--            {% csrf_token %}-->
+<!--            <input type="text" name="q" type="text"/>-->
+<!--            <button type="button" onclick="searchform.submit()"> search</button>-->
+<!--        </form>-->
+
     </ul>
 
      {% if messages %}

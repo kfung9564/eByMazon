@@ -18,6 +18,25 @@ from users.forms import RatingForm
 from users.models import UserMessages, Transaction, Rating
 
 
+def search(request):
+    if request.method == 'GET':
+        title = request.GET.get('search')
+        # keywords = request.GET.get('search')
+        # fixedPrice = request.GET.get('search')
+        # ratings = request.GET.get('search')
+
+        item = Item.objects.get(title=request.GET['Title'])
+        itemSearched = Item.objects.filter(item=title)
+
+        content = {'items': itemSearched
+                    }
+        return render(request,"search.html", content)
+    else:
+        messages.success(request, "No items found")
+        return render(request,"search.html",{})
+
+
+
 def catalog(request):
     fixedPriceItems = ItemFixedPrice.objects.all()
     bidPriceItems = ItemBidPrice.objects.all()

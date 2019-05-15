@@ -1,0 +1,12 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+{% if items.all %}
+<h1>Items Found</h1>
+    {% for item in items %}
+        <p>{{item.title}}</p>
+    {% endfor %)
+{% else %}
+    <h2>This item does not exist</h2>
+{% endif %}
+{% endblock %}
