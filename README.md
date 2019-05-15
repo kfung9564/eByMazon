@@ -48,7 +48,7 @@ Item Applications
 - [x] Items removed from the system by SUs will be blacklisted from system. 
 
 Complaints
-- [ ] File complaints to SUs against certain OUs whose item or payment has some problem or explain to the SU about any complaint received from others.
+- [x] File complaints to SUs against certain OUs whose item or payment has some problem or explain to the SU about any complaint received from others.
 - [ ] Process complaints: either removed or saved as justified ones after communicating with the OU who was complained.
 
 Grading Users
@@ -60,7 +60,7 @@ User UI
 - [ ] See his/her own transaction history.
 - [ ] When logging in, the system should have personalized recommendations to the OU based on his/her past search/purchase records, if no such information is available, the top 3 most popular items and OUs are displayed in the GUI.
 - [ ] browse/search available items based on title, keywords, price (fixed or a range for bidding) and ratings;
-- [ ] Change his/her password, name, address, phone and credit card number, but not the id.
+- [x] Change his/her password, name, address, phone and credit card number, but not the id.
 - [ ] An OU can maintain a friend list who will receive discount and friend-only messages, the OU is free to add/delete any OU from the list.
 
 SU privilliages
