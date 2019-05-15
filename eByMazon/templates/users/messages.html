@@ -1,0 +1,64 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Messages</h1>
+
+<h2>Received Messages</h2>
+{% if receivedMessages.all %}
+    {% for receivedMessage in receivedMessages %}
+        <a href="{% url 'viewmessages' %}?id={{ receivedMessage.pk }}" class="catalogitem">
+            <table>
+                <tr>
+                    <td>Title:</td>
+                    <td>{{ receivedMessage.title }}</td>
+                </tr>
+                <tr>
+                    <td>Sender:</td>
+                    <td>{{ receivedMessage.sender.profile.name }} < {{ receivedMessage.sender.username }} ></td>
+                </tr>
+                <tr>
+                    <td>Recipient:</td>
+                    <td>{{ receivedMessage.recipient.profile.name }} < {{ receivedMessage.recipient.username }} ></td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td>{{ receivedMessage.date }}</td>
+                </tr>
+            </table>
+        </a>
+    {% endfor %}
+{% else %}
+    <h3>No received messages</h3>
+{% endif %}
+
+<h2>Sent Messages</h2>
+{% if sentMessages.all %}
+    {% for sentMessage in sentMessages %}
+        <a href="{% url 'viewmessages' %}?id={{ sentMessage.pk }}" class="catalogitem">
+            <table>
+                <tr>
+                    <td>Sender:</td>
+                    <td>{{ sentMessage.sender.profile.name }}</td>
+                    <td>{{ sentMessage.sender.username }}</td>
+                </tr>
+                <tr>
+                    <td>Recipient:</td>
+                    <td>{{ sentMessage.recipient.profile.name }}</td>
+                    <td>{{ sentMessage.recipient.username }}</td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td>{{ sentMessage.date }}</td>
+                </tr>
+                <tr>
+                    <td>Title:</td>
+                    <td>{{ sentMessage.title }}</td>
+                </tr>
+            </table>
+        </a>
+    {% endfor %}
+{% else %}
+    <h3>No sent messages</h3>
+{% endif %}
+
+{% endblock %}

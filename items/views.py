@@ -1,14 +1,16 @@
 import decimal
 
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice, Order
-from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm
+from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm, NotFirstJustifyForm
 from django.contrib import messages
 from users.decorators import su_required
 
 # Create your views here.
+from users.models import UserMessages
 
 
 def catalog(request):
@@ -18,6 +20,78 @@ def catalog(request):
     content = {'fixedPriceItems': fixedPriceItems,
                'bidPriceItems': bidPriceItems}
     return render(request, 'items/catalog.html', content)
+
+
+def processorders(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    fixedItem = ItemFixedPrice.objects.get(item=item)
+    orders = Order.objects.filter(item=fixedItem).order_by('orderDate')
+    firstOrder =orders[:1].get()
+
+    content = {'orders': orders,
+               'firstOrder': firstOrder,
+               'item': item}
+    return render(request, 'items/processorders.html', content)
+
+
+def confirmorder(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    buyer = User.objects.get(username=request.GET['Buyer'])
+
+    fixedItem = ItemFixedPrice.objects.get(item=item)
+    order = Order.objects.get(item=fixedItem, buyer=buyer)
+
+    if request.method == 'POST':
+        if request.POST['Confirm'] == 'Confirm':
+            item.sellType = 'Offsale'
+            item.owner = order.buyer
+            item.save()
+            fixedItem.delete()
+
+            messages.success(request, item.title + ' has been sold to ' + item.owner.profile.name + '.')
+        return redirect('itemmanager')
+
+    content = {'order': order,
+               'item': item}
+    return render(request, 'items/confirmorder.html', content)
+
+
+def confirmnotfirst(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    buyer = User.objects.get(username=request.GET['Buyer'])
+
+    fixedItem = ItemFixedPrice.objects.get(item=item)
+    order = Order.objects.get(item=fixedItem, buyer=buyer)
+
+    firstOrder = Order.objects.filter(item=fixedItem).order_by('orderDate')[:1].get()
+
+    System = User.objects.get(username='System')
+
+    if request.method == 'POST':
+        form = NotFirstJustifyForm(request.POST)
+
+        if form.is_valid():
+            if request.POST['Confirm'] == 'Confirm':
+                msg = 'Your order was denied due to the following reasons: ' + request.POST.get('message')
+                UserMessages.objects.create(sender=System, recipient=firstOrder.buyer, message=msg)
+
+                item.sellType = 'Offsale'
+                item.owner = order.buyer
+                item.save()
+                fixedItem.delete()
+
+                messages.success(request, item.title + ' has been sold to ' + item.owner.profile.name + '.')
+
+                return redirect('itemmanager')
+
+    else:
+        form = NotFirstJustifyForm()
+
+    content = {'order': order,
+               'item': item,
+               'form': form}
+    return render(request, 'items/confirmnotfirst.html', content)
+
 
 
 def fixeditempage(request):
@@ -232,8 +306,6 @@ def sellbid(request):
 
 def putoffsale(request):
     item = Item.objects.get(title=request.GET['Title'])
-    item.sellType = 'Offsale'
-    item.save()
 
     if item.sellType == 'Fixed':
         itemOnMarket = ItemFixedPrice.objects.filter(item=item)
@@ -242,7 +314,10 @@ def putoffsale(request):
         itemOnMarket = ItemBidPrice.objects.filter(item=item)
         itemOnMarket.delete()
 
-    messages.success(request, item.title + ' has been put offsale.')
+    item.sellType = 'Offsale'
+    item.save()
+
+    messages.success(request, item.title + ' has been put off sale.')
     return redirect('itemmanager')
 
 

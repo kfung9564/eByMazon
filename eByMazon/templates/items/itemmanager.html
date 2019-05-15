@@ -59,7 +59,8 @@
                 </tr>
                 <tr>
                     <td><a href="{% url 'edititems' %}?Title={{ ownedFixedItem.title }}"><button>Edit</button></a></td>
-                    <td><a href="{% url 'putoffsale' %}?Title={{ ownedFixedItem.title }}"><button>Cancel Sale</button></a></td>
+                    <td><a href="{% url 'processorders' %}?Title={{ ownedFixedItem.title }}"><button>Process Orders</button></a></td>
+
                 </tr>
             </table>
         {% endif %}

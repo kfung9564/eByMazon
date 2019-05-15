@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from .forms import UserAppForm
-from .models import UserApplication
+from .models import UserApplication, UserBlacklist, UserMessages
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
 
@@ -14,7 +14,17 @@ from django.contrib.auth.hashers import make_password
 def apply(request):
     if request.method == 'POST':
         form = UserAppForm(request.POST)
-        if form.is_valid():
+
+        isValid = True
+        if UserBlacklist.objects.filter(username=request.POST['username']).exists():
+            messages.success(request, 'This user is blocked from re-application')
+            isValid = False
+        else:
+            if User.objects.filter(username=request.POST['username']).exists():
+                messages.success(request, 'User already exists.')
+                isValid = False
+
+        if form.is_valid() and isValid:
             form.save()
             return redirect('uappsuccess')
     else:
@@ -24,6 +34,21 @@ def apply(request):
 
 def uappsuccess(request):
     return render(request, 'registration/uappsuccess.html')
+
+
+def usermessages(request):
+    receivedMessages = UserMessages.objects.filter(recipient=request.user)
+    sentMessages = UserMessages.objects.filter(sender=request.user)
+
+    content = {'receivedMessages': receivedMessages,
+               'sentMessages': sentMessages}
+    return render(request, 'users/messages.html', content)
+
+
+def viewmessages(request):
+    message = UserMessages.objects.get(pk=request.GET['id'])
+
+    return render(request, 'users/viewmessage.html', {'message': message})
 
 
 @login_required
@@ -76,7 +101,17 @@ def uappdeny(request):
     applicant = UserApplication.objects.get(username=request.GET['Username'])
     if request.method == 'POST':
         if request.POST['Deny'] == 'Confirm':
+            UserBlacklist.objects.create(username=applicant.username)
+            messages.success(request, applicant.username + ' has been denied and added to the Blacklist.')
+
             applicant.delete()
         return redirect('uapps')
 
     return render(request, 'users/denyUser.html', {'applicant': applicant})
+
+
+@su_required
+def ublacklist(request):
+    blacklist = UserBlacklist.objects.all()
+
+    return render(request, 'users/userblacklist.html', {'blacklist': blacklist})

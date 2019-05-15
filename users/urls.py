@@ -7,11 +7,14 @@ urlpatterns = [
     # path(URL_NAME, views.VIEW_NAME, NAME)
 
     path('apply/', views.apply, name='apply'),
+    path('messages/', views.usermessages, name='messages'),
+    path('messages/view', views.viewmessages, name='viewmessages'),
     path('landing/', views.newuserlanding, name='newUserLanding'),
     path('applications/', views.uapps, name='uapps'),
     path('applications/success', views.uappsuccess, name='uappsuccess'),
     path('applications/approve', views.uappapprove, name='approveUser'),
     path('applications/deny', views.uappdeny, name='denyUser'),
+    path('applications/blacklist', views.ublacklist, name='ublacklist'),
     path('accounts/', include('django.contrib.auth.urls')),
     # users/login/ [name='login']
     # users/logout/ [name='logout']

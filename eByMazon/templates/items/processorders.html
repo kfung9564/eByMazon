@@ -1,0 +1,32 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Orders for {{ item.title }}</h1>
+{% if orders.all %}
+    {% for order in orders %}
+        <table>
+            <tr>
+                <td>Buyer Username:</td>
+                <td>{{ order.buyer.username }}</td>
+            </tr>
+            <tr>
+                <td>Buyer Name:</td>
+                <td>{{ order.buyer.profile.name }}</td>
+            </tr>
+            <tr>
+                <td>Order Date:</td>
+                <td>{{ order.orderDate }}</td>
+            </tr>
+        </table>
+            {% if order == firstOrder %}
+                <a href="{% url 'confirmorder' %}?Title={{ item.title }}&Buyer={{ order.buyer.username }}"><button>Confirm Order</button></a>
+            {% else %}
+                <a href="{% url 'confirmnotfirst' %}?Title={{ item.title }}&Buyer={{ order.buyer.username }}"><button>Confirm Order</button></a>
+            {% endif %}
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'putoffsale' %}?Title={{ item.title }}"><button>Cancel Sale</button></a>
+{% else %}
+    <h2>No orders for this item.</h2>
+{% endif %}
+{% endblock %}
