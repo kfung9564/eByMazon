@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice
+from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice, Order
 from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm
 from django.contrib import messages
 from users.decorators import su_required
@@ -16,6 +16,34 @@ def catalog(request):
     content = {'fixedPriceItems': fixedPriceItems,
                'bidPriceItems': bidPriceItems}
     return render(request, 'items/catalog.html', content)
+
+
+def fixeditempage(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    fixedPriceItem = ItemFixedPrice.objects.get(item=item)
+
+    content = {'fixedPriceItem': fixedPriceItem}
+    return render(request, 'items/fixeditempage.html', content)
+
+
+def fixeditemorder(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    fixedPriceItem = ItemFixedPrice.objects.get(item=item)
+
+    if request.method == 'POST':
+        if request.POST['Order'] == 'Place Order':
+            if not Order.objects.filter(item=fixedPriceItem, buyer=request.user):
+                Order.objects.create(item=fixedPriceItem, buyer=request.user)
+                messages.success(request, 'Order for ' + fixedPriceItem.item.title + ' complete.')
+            else:
+                messages.success(request, 'You have already ordered ' + fixedPriceItem.item.title + '.')
+        else:
+            messages.success(request, 'Order for ' + fixedPriceItem.item.title + ' canceled.')
+
+        return redirect('catalog')
+
+    content = {'fixedPriceItem': fixedPriceItem}
+    return render(request, 'items/orderitem.html', content)
 
 
 def apply(request):

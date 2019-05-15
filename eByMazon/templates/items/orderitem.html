@@ -1,0 +1,37 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+    {% if fixedPriceItem %}
+    <h1>Confirm Order of {{ fixedPriceItem.item.title }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td colspan="2">
+                    <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
+                </td>
+            </tr>
+            <tr>
+                <td>Sold by:</td>
+                <td>{{ fixedPriceItem.item.owner }}</td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>${{ fixedPriceItem.price }}</td>
+            </tr>
+            <tr>
+                <td>Keywords:</td>
+                <td>${{ fixedPriceItem.item.key_words }}</td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>${{ fixedPriceItem.item.description }}</td>
+            </tr>
+        </table>
+          <input type="submit" name="Order" value="Place Order">
+          <input type="submit" name="Order" value="Cancel Order">
+    </form>
+    {% else %}
+        <h2>This item does not exist</h2>
+    {% endif %}
+{% endblock %}

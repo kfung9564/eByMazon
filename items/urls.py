@@ -17,4 +17,6 @@ urlpatterns = [
     path('manage/removeitem/', views.removeitem, name='removeitem'),
     path('manage/suedit/', views.su_edititem, name='suedit'),
     path('', views.catalog, name='catalog'),
+    path('shopping/itempage', views.fixeditempage, name='fixeditempage'),
+    path('shopping/order', views.fixeditemorder, name='fixeditemorder'),
 ]

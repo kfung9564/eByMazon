@@ -6,28 +6,27 @@
     <h1>Shopping</h1>
     {% if fixedPriceItems.all %}
         {% for fixedPriceItem in fixedPriceItems %}
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Product Name:</td>
-                    <td>{{ fixedPriceItem.item.title }}</td>
-                </tr>
-                <tr>
-                    <td>Sold by:</td>
-                    <td>{{ fixedPriceItem.item.owner }}</td>
-                </tr>
-                <tr>
-                    <td>Price:</td>
-                    <td>${{ fixedPriceItem.price }}</td>
-                </tr>
-                <tr>
-
-                </tr>
-            </table>
+            <a href="{% url 'fixeditempage' %}?Title={{ fixedPriceItem.item.title }}" class="catalogitem">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Product Name:</td>
+                        <td>{{ fixedPriceItem.item.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sold by:</td>
+                        <td>{{ fixedPriceItem.item.owner }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>${{ fixedPriceItem.price }}</td>
+                    </tr>
+                </table>
+            </a>
         {% endfor %}
     {% else %}
         <h2>No items on sale for fixed price.</h2>
