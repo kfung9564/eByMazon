@@ -21,15 +21,36 @@
             </tr>
             <tr>
                 <td>Keywords:</td>
-                <td>${{ fixedPriceItem.item.key_words }}</td>
+                <td>{{ fixedPriceItem.item.key_words }}</td>
             </tr>
             <tr>
                 <td>Description:</td>
-                <td>${{ fixedPriceItem.item.description }}</td>
+                <td>{{ fixedPriceItem.item.description }}</td>
             </tr>
         </table>
-          <input type="submit" name="Order" value="Place Order">
-          <input type="submit" name="Order" value="Cancel Order">
+
+        <h1>Confirm Shipping Details</h1>
+        <table>
+             <tr>
+                <td>Name:</td>
+                <td>{{ user.profile.name }}</td>
+            </tr>
+            <tr>
+                <td>Shipping address:</td>
+                <td>{{ user.profile.address }}, {{ user.profile.state }}</td>
+            </tr>
+            <tr>
+                <td>Phone number:</td>
+                <td>{{ user.profile.phone_num }}</td>
+            </tr>
+            <tr>
+                <td>Credit Card number:</td>
+                <td>{{ censoredCardNum }}</td>
+            </tr>
+        </table>
+
+        <input type="submit" name="Order" value="Place Order">
+        <input type="submit" name="Order" value="Cancel Order">
     </form>
     {% else %}
         <h2>This item does not exist</h2>

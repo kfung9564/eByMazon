@@ -29,6 +29,7 @@ def fixeditempage(request):
 def fixeditemorder(request):
     item = Item.objects.get(title=request.GET['Title'])
     fixedPriceItem = ItemFixedPrice.objects.get(item=item)
+    censoredCardNum = '************' + request.user.profile.credit_card_num[12:]
 
     if request.method == 'POST':
         if request.POST['Order'] == 'Place Order':
@@ -42,7 +43,8 @@ def fixeditemorder(request):
 
         return redirect('catalog')
 
-    content = {'fixedPriceItem': fixedPriceItem}
+    content = {'fixedPriceItem': fixedPriceItem,
+               'censoredCardNum': censoredCardNum}
     return render(request, 'items/orderitem.html', content)
 
 

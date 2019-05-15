@@ -19,14 +19,17 @@
         </tr>
         <tr>
             <td>Keywords:</td>
-            <td>${{ fixedPriceItem.item.key_words }}</td>
+            <td>{{ fixedPriceItem.item.key_words }}</td>
         </tr>
         <tr>
             <td>Description:</td>
-            <td>${{ fixedPriceItem.item.description }}</td>
+            <td>{{ fixedPriceItem.item.description }}</td>
         </tr>
     </table>
-    <a href="{% url 'fixeditemorder' %}?Title={{ fixedPriceItem.item.title }}"><button>Buy</button></a>
+    {% if not fixedPriceItem.item.owner == user %}
+        <a href="{% url 'fixeditemorder' %}?Title={{ fixedPriceItem.item.title }}"><button>Buy</button></a>
+    {% endif %}
+
     {% else %}
         <h2>This item does not exist</h2>
     {% endif %}

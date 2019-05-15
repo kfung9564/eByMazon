@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'items.apps.ItemsConfig',
-    'tempus_dominus'
+    'tempus_dominus',
+    'phonenumber_field'
 
 ]
 
@@ -134,3 +135,5 @@ MESSAGE_LEVEL = message_constants.DEBUG
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/users/landing/'
 LOGOUT_REDIRECT_URL = '/'
+
+PHONENUMBER_DEFAULT_REGION = 'US'

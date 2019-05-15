@@ -1,8 +1,12 @@
 from django import forms
+from phonenumber_field.formfields import PhoneNumberField
+
 from .models import UserApplication
 
 
 class UserAppForm(forms.ModelForm):
+    phone_num = PhoneNumberField()
+
     class Meta:
         model = UserApplication
         fields = ['username', 'name', 'credit_card_num', 'address', 'state', 'phone_num']
