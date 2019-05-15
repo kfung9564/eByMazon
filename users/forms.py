@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.forms import Select
+
 from .models import UserApplication, Profile
 from phonenumber_field.formfields import PhoneNumberField
 from .models import UserApplication
@@ -138,3 +141,9 @@ class UserAppForm(forms.ModelForm):
         widgets = {
             'state': forms.Select(choices=STATE_CHOICES, attrs={'class': 'form-control'}),
         }
+
+
+class UserSelectForm(forms.Form):
+    username = forms.ModelChoiceField(queryset=User.objects.all(),
+                                      widget=Select(attrs={'class': 'form-control'},),
+                                      label='Username')

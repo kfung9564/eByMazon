@@ -1,0 +1,86 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+{% if user.profile.is_su %}
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <button type="submit">Select User</button>
+    </form>
+
+    <h1>Transaction History of {{ selected.username }}</h1>
+        {% if purchases.all %}
+            <h2>Purchase History</h2>
+            {% for purchase in purchases %}
+                <table>
+                    <tr>
+                        <td>Seller:</td>
+                        <td>{{ purchase.seller }}</td>
+                    </tr>
+                    <tr>
+                        <td>Title:</td>
+                        <td>{{ purchase.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sell Type:</td>
+                        <td>{{ purchase.sellType }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>{{ purchase.originalPrice }}</td>
+                    </tr>
+                    <tr>
+                        <td>Paid Price:</td>
+                        <td>{{ purchase.paidPrice }}</td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Date:</td>
+                        <td>{{ purchase.date }}</td>
+                    </tr>
+                </table>
+                <br />
+            {% endfor %}
+        {% else %}
+            <h2>No purchases.</h2>
+        {% endif %}
+
+        {% if sales.all %}
+            <h2>Sales History</h2>
+            {% for sale in sales %}
+                <table>
+                    <tr>
+                        <td>Buyer:</td>
+                        <td>{{ sale.buyer }}</td>
+                    </tr>
+                    <tr>
+                        <td>Title:</td>
+                        <td>{{ sale.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sell Type:</td>
+                        <td>{{ sale.sellType }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>{{ sale.originalPrice }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sold Price:</td>
+                        <td>{{ sale.paidPrice }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sale Date:</td>
+                        <td>{{ sale.date }}</td>
+                    </tr>
+                </table>
+                <br />
+            {% endfor %}
+        {% else %}
+            <h2>No sales.</h2>
+        {% endif %}
+
+
+{% else %}
+    <h2>You do not have access.</h2>
+{% endif %}
+{% endblock %}

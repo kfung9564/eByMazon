@@ -24,17 +24,18 @@
         {% endif %}
         {% if user.is_authenticated %}
             <li>Dashboard</li>
+             <h3>Money Spent: ${{ user.profile.spent }}</h3></li>
             <li><a href="{% url 'editprofile' %}">Edit Profile</a></li>
             <li><a href="{% url 'transhistory' %}">Transaction History</a></li>
             <li><a href="{% url 'messages' %}">Messages</a></li>
             <li><a href="{% url 'itemapply' %}">Submit Item</a></li>
             <li><a href="{% url 'itemmanager' %}">Manage Your Items</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
-            <h3>Money Spent: ${{ user.profile.spent }}</h3>
         {% endif %}
         {% if user.profile.is_su %}
             <li><a href="{% url 'uapps' %}">User Applications</a></li>
             <li><a href="{% url 'ublacklist' %}">User Blacklist</a></li>
+            <li><a href="{% url 'usertransactions' %}">User Transactions</a></li>
         {% endif %}
         <input type="text" placeholder="Search...">
     </ul>

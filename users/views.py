@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import UserAppForm, UserUpdateForm
+from .forms import UserAppForm, UserUpdateForm, UserSelectForm
 from .models import UserApplication, Profile, UserBlacklist, UserMessages, Transaction
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
@@ -147,3 +147,24 @@ def ublacklist(request):
     blacklist = UserBlacklist.objects.all()
 
     return render(request, 'users/userblacklist.html', {'blacklist': blacklist})
+
+
+@su_required
+def usertransactions(request):
+    selected = None
+    purchases = None
+    sales = None
+
+    if request.method == 'POST':
+        form = UserSelectForm(request.POST)
+        selected = User.objects.get(pk=request.POST.get('username'))
+        purchases = Transaction.objects.filter(buyer=selected)
+        sales = Transaction.objects.filter(seller=selected)
+    else:
+        form = UserSelectForm()
+
+    content = {'form': form,
+               'purchases': purchases,
+               'sales': sales,
+               'selected': selected}
+    return render(request, 'users/usertrans.html', content)
