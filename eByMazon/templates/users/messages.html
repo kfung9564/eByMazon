@@ -6,7 +6,7 @@
 <h2>Received Messages</h2>
 {% if receivedMessages.all %}
     {% for receivedMessage in receivedMessages %}
-        <a href="{% url 'viewmessages' %}?id={{ receivedMessage.pk }}" class="catalogitem">
+        <a href="{% url 'viewmessages' %}?id={{ receivedMessage.pk }}" class="messagesblock">
             <table>
                 <tr>
                     <td>Title:</td>
@@ -25,37 +25,35 @@
                     <td>{{ receivedMessage.date }}</td>
                 </tr>
             </table>
-        </a>
+        </a><br />
     {% endfor %}
 {% else %}
     <h3>No received messages</h3>
 {% endif %}
-
+<br /><br /><br />
 <h2>Sent Messages</h2>
 {% if sentMessages.all %}
     {% for sentMessage in sentMessages %}
-        <a href="{% url 'viewmessages' %}?id={{ sentMessage.pk }}" class="catalogitem">
+        <a href="{% url 'viewmessages' %}?id={{ sentMessage.pk }}" class="messagesblock">
             <table>
                 <tr>
+                    <td>Title:</td>
+                    <td>{{ sentMessage.title }}</td>
+                </tr>
+                <tr>
                     <td>Sender:</td>
-                    <td>{{ sentMessage.sender.profile.name }}</td>
-                    <td>{{ sentMessage.sender.username }}</td>
+                    <td>{{ sentMessage.sender.profile.name }} < {{ sentMessage.sender.username }} ></td>
                 </tr>
                 <tr>
                     <td>Recipient:</td>
-                    <td>{{ sentMessage.recipient.profile.name }}</td>
-                    <td>{{ sentMessage.recipient.username }}</td>
+                    <td>{{ sentMessage.recipient.profile.name }} < {{ sentMessage.recipient.username }} ></td>
                 </tr>
                 <tr>
                     <td>Date:</td>
                     <td>{{ sentMessage.date }}</td>
                 </tr>
-                <tr>
-                    <td>Title:</td>
-                    <td>{{ sentMessage.title }}</td>
-                </tr>
             </table>
-        </a>
+        </a><br />
     {% endfor %}
 {% else %}
     <h3>No sent messages</h3>

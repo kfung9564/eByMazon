@@ -63,7 +63,7 @@ class UserBlacklist(models.Model):
 class UserMessages(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
-    title = models.CharField(null=False, default="Title", max_length=255)
+    title = models.CharField(null=True, max_length=255)
     message = models.TextField(null=True)
     date = models.DateTimeField(default=datetime.now, blank=True)
 

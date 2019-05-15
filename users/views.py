@@ -5,7 +5,9 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import UserAppForm, UserUpdateForm, UserSelectForm
+
+from items.forms import NotFirstJustifyForm
+from .forms import UserAppForm, UserUpdateForm, UserSelectForm, SendMessage
 from .models import UserApplication, Profile, UserBlacklist, UserMessages, Transaction
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
@@ -60,6 +62,32 @@ def transhistory(request):
     return render(request, 'users/transhistory.html', content)
 
 
+def userlist(request):
+    Users = User.objects.all()
+
+    return render(request, 'users/userlist.html', {'Users': Users})
+
+
+def sendmessages(request):
+    user = User.objects.get(username=request.GET['Username'])
+
+    if request.method == 'POST':
+        form = SendMessage(request.POST)
+        if form.is_valid():
+            msg = request.POST.get('message')
+            title = request.POST.get('title')
+            UserMessages.objects.create(sender=request.user, recipient=user, title=title, message=msg)
+
+            messages.success(request, 'Message sent!')
+            return redirect('messages')
+    else:
+        form = SendMessage()
+
+    content = {'user': user,
+               'form': form}
+    return render(request, 'users/sendmessage.html', content)
+
+
 @login_required
 def newuserlanding(request):
     if request.user.profile.is_new is False:
@@ -102,6 +130,7 @@ def EditProfile(request):
 
     except ObjectDoesNotExist:
         return render(request, 'users/account_not_exist.html')
+
 
 @su_required
 def uapps(request):

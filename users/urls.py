@@ -7,7 +7,9 @@ urlpatterns = [
     # path(URL_NAME, views.VIEW_NAME, NAME)
 
     path('apply/', views.apply, name='apply'),
+    path('list/', views.userlist, name='userlist'),
     path('messages/', views.usermessages, name='messages'),
+    path('messages/send', views.sendmessages, name='sendmessages'),
     path('messages/view', views.viewmessages, name='viewmessages'),
     path('landing/', views.newuserlanding, name='newUserLanding'),
     path('applications/', views.uapps, name='uapps'),
