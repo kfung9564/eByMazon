@@ -17,6 +17,7 @@ urlpatterns = [
     path('applications/blacklist', views.ublacklist, name='ublacklist'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('edit', views.EditProfile, name = 'editprofile'),
+    path('transactions/', views.transhistory, name='transhistory'),
     # users/login/ [name='login']
     # users/logout/ [name='logout']
     # users/password_change/ [name='password_change']

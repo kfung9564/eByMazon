@@ -24,9 +24,9 @@
                 <a href="{% url 'confirmnotfirst' %}?Title={{ item.title }}&Buyer={{ order.buyer.username }}"><button>Confirm Order</button></a>
             {% endif %}
     {% endfor %}
-    <br><br>
-    <a href="{% url 'putoffsale' %}?Title={{ item.title }}"><button>Cancel Sale</button></a>
 {% else %}
     <h2>No orders for this item.</h2>
 {% endif %}
+    <br><br>
+    <a href="{% url 'putoffsale' %}?Title={{ item.title }}"><button>Cancel Sale</button></a>
 {% endblock %}

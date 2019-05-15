@@ -23,12 +23,14 @@
             <li><a href="{% url 'login' %}">Log In</a></li>
         {% endif %}
         {% if user.is_authenticated %}
-            <li><a href="">Dashboard</a></li>
+            <li>Dashboard</li>
             <li><a href="{% url 'editprofile' %}">Edit Profile</a></li>
+            <li><a href="{% url 'transhistory' %}">Transaction History</a></li>
             <li><a href="{% url 'messages' %}">Messages</a></li>
             <li><a href="{% url 'itemapply' %}">Submit Item</a></li>
             <li><a href="{% url 'itemmanager' %}">Manage Your Items</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
+            <h3>Money Spent: ${{ user.profile.spent }}</h3>
         {% endif %}
         {% if user.profile.is_su %}
             <li><a href="{% url 'uapps' %}">User Applications</a></li>

@@ -1,4 +1,4 @@
-from django.core.validators import MaxLengthValidator, MinLengthValidator, RegexValidator
+from django.core.validators import MaxLengthValidator, MinLengthValidator, RegexValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -45,6 +45,7 @@ class Profile(models.Model):
     address = models.CharField(null=False, default="", max_length=255)
     state = models.CharField(null=False, default="New York", max_length=255)
     phone_num = PhoneNumberField(null=False, blank=False)
+    spent = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)], default=0)
     is_new = models.BooleanField(default=True)
     is_su = models.BooleanField(default=False)
 
@@ -61,6 +62,16 @@ class UserMessages(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
     title = models.CharField(null=False, default="Title", max_length=255)
     message = models.TextField(null=True)
+    date = models.DateTimeField(default=datetime.now, blank=True)
+
+
+class Transaction(models.Model):
+    seller = models.CharField(null=False, max_length=255)
+    buyer = models.CharField(null=False, max_length=255)
+    title = models.CharField(null=False, max_length=255)
+    sellType = models.CharField(null=False, max_length=255)
+    originalPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
+    paidPrice = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0.01)])
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 

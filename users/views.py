@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import UserAppForm, UserUpdateForm
-from .models import UserApplication, Profile, UserBlacklist, UserMessages
+from .models import UserApplication, Profile, UserBlacklist, UserMessages, Transaction
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
 
@@ -49,6 +49,15 @@ def viewmessages(request):
     message = UserMessages.objects.get(pk=request.GET['id'])
 
     return render(request, 'users/viewmessage.html', {'message': message})
+
+
+def transhistory(request):
+    purchases = Transaction.objects.filter(buyer=request.user.username)
+    sales = Transaction.objects.filter(seller=request.user.username)
+
+    content = {'purchases': purchases,
+               'sales': sales}
+    return render(request, 'users/transhistory.html', content)
 
 
 @login_required
