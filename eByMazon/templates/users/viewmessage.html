@@ -1,0 +1,33 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+
+{% if message %}
+<h1>{{ message.title }}</h1>
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td>{{ message.title }}</td>
+        </tr>
+        <tr>
+            <td>Sender:</td>
+            <td>{{ message.sender.profile.name }} < {{ message.sender.username }} ></td>
+        </tr>
+        <tr>
+            <td>Recipient:</td>
+            <td>{{ message.recipient.profile.name }} < {{ message.recipient.username }} ></td>
+        </tr>
+        <tr>
+            <td>Date:</td>
+            <td>{{ message.date }}</td>
+        </tr>
+        <tr>
+            <td>Body:</td>
+            <td>{{ message.message }}</td>
+        </tr>
+    </table>
+{% else %}
+    <h3>This message does not exist.</h3>
+{% endif %}
+
+{% endblock %}

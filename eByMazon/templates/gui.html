@@ -13,7 +13,8 @@
         <li><a href="{% url 'catalog' %}">Catalog</a></li>
             {% if user.profile.is_su %}
                 <ul>
-                    <li><a href="{% url 'catalogreview' %}">Review Item Suggestions</a></li>
+                    <li><a href="{% url 'catalogreview' %}">Review Item Applications</a></li>
+                    <li><a href="{% url 'itemlist' %}">View All Items</a></li>
                     <li><a href="{% url 'catalogblacklist' %}">Blacklist</a></li>
                 </ul>
             {% endif %}
@@ -24,12 +25,14 @@
         {% if user.is_authenticated %}
             <li><a href="">Dashboard</a></li>
             <li><a href="{% url 'editprofile' %}">Edit Profile</a></li>
+            <li><a href="{% url 'messages' %}">Messages</a></li>
             <li><a href="{% url 'itemapply' %}">Submit Item</a></li>
-            <li><a href="{% url 'itemmanager' %}">Manage Items</a></li>
+            <li><a href="{% url 'itemmanager' %}">Manage Your Items</a></li>
             <li><a href="{% url 'logout' %}">Log Out</a></li>
         {% endif %}
         {% if user.profile.is_su %}
             <li><a href="{% url 'uapps' %}">User Applications</a></li>
+            <li><a href="{% url 'ublacklist' %}">User Blacklist</a></li>
         {% endif %}
         <input type="text" placeholder="Search...">
     </ul>

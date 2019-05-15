@@ -7,3 +7,15 @@
     font-size: 1.5em;
     font-weight: bold;
 }
+
+.itemicons {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+}
+
+.catalogitem {
+    text-decoration: none;
+    color: #000;
+    display: inline-block;.
+}

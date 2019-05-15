@@ -1,0 +1,30 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Confirm Sale for {{ item.title }}</h1>
+{% if order %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>Buyer Username:</td>
+            <td>{{ order.buyer.username }}</td>
+        </tr>
+        <tr>
+            <td>Buyer:</td>
+            <td>{{ order.buyer.profile.name }}</td>
+        </tr>
+        <tr>
+            <td>Order Date:</td>
+            <td>{{ order.orderDate }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="Confirm" value="Confirm"></td>
+            <td><input type="submit" name="Confirm" value="Cancel"></td>
+        </tr>
+    </table>
+</form>
+{% else %}
+    <h2>No orders for this item.</h2>
+{% endif %}
+{% endblock %}

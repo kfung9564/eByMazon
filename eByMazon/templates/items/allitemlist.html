@@ -1,0 +1,40 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+
+<h1>All Items List</h1>
+{% if items.all %}
+    {% for item in items %}
+        <table>
+            <tr>
+                <td colspan="2">
+                    <img src="{{ item.picture }}" class="itemicons" />
+                </td>
+            </tr>
+            <tr>
+                <td>Product Name:</td>
+                <td>{{ item.title }}</td>
+            </tr>
+            <tr>
+                <td>Owner:</td>
+                <td>{{ item.owner }}</td>
+            </tr>
+            <tr>
+                <td>Keywords:</td>
+                <td>{{ item.key_words }}</td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>{{ item.description }}</td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'suedit' %}?Title={{ item.title }}"><button>Edit</button></a></td>
+                <td><a href="{% url 'removeitem' %}?Title={{ item.title }}"><button>Remove</button></a></td>
+            </tr>
+        </table>
+        <br />
+    {% endfor %}
+{% else %}
+    <h2>No items available at this time.</h2>
+{% endif %}
+{% endblock %}

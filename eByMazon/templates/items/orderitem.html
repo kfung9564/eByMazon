@@ -1,0 +1,79 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+    {% if fixedPriceItem %}
+    <h1>Order Summary</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td colspan="2">
+                    <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
+                </td>
+            </tr>
+             <tr>
+                <td>Product Name:</td>
+                <td>{{ fixedPriceItem.item.title }}</td>
+            </tr>
+            <tr>
+                <td>Sold by:</td>
+                <td>{{ fixedPriceItem.item.owner }}</td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>${{ fixedPriceItem.price }}</td>
+            </tr>
+            <tr>
+                <td>Keywords:</td>
+                <td>{{ fixedPriceItem.item.key_words }}</td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>{{ fixedPriceItem.item.description }}</td>
+            </tr>
+        </table>
+
+        <h1>Confirm Shipping Details</h1>
+        <table>
+             <tr>
+                <td>Name:</td>
+                <td>{{ user.profile.name }}</td>
+            </tr>
+            <tr>
+                <td>Shipping address:</td>
+                <td>{{ user.profile.address }}, {{ user.profile.state }}</td>
+            </tr>
+            <tr>
+                <td>Phone number:</td>
+                <td>{{ user.profile.phone_num }}</td>
+            </tr>
+        </table>
+
+         <h1>Confirm Payment Details</h1>
+        <table>
+             <tr>
+                <td>Credit Card number:</td>
+                <td>{{ censoredCardNum }}</td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>${{ fixedPriceItem.price }}</td>
+            </tr>
+             <tr>
+                <td>State sales tax ({{ user.profile.state }}):</td>
+                <td>+ ${{ tax }}</td>
+            </tr>
+            <tr>
+                <td>Total Price:</td>
+                <td>${{ totalPrice }}</td>
+            </tr>
+        </table>
+
+
+        <input type="submit" name="Order" value="Place Order">
+        <input type="submit" name="Order" value="Cancel Order">
+    </form>
+    {% else %}
+        <h2>This item does not exist</h2>
+    {% endif %}
+{% endblock %}

@@ -1,5 +1,7 @@
 from django import forms
 from .models import UserApplication, Profile
+from phonenumber_field.formfields import PhoneNumberField
+from .models import UserApplication
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -12,6 +14,8 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class UserAppForm(forms.ModelForm):
+    phone_num = PhoneNumberField()
+
     class Meta:
         model = UserApplication
         fields = ['username', 'name', 'credit_card_num', 'address', 'state', 'phone_num']
@@ -75,5 +79,3 @@ class UserAppForm(forms.ModelForm):
         widgets = {
             'state': forms.Select(choices=STATE_CHOICES, attrs={'class': 'form-control'}),
         }
-
-

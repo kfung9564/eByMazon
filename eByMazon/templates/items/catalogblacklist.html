@@ -4,6 +4,7 @@
 <h1>Blacklisted Items</h1>
 {% if blacklist.all %}
     {% for item in blacklist %}
+        <form>
             <table>
                 <tr>
                     <td>Product Name:</td>
@@ -20,7 +21,6 @@
             </table>
             <input type="hidden" name="item_name" value="{{ item.title }}">
         </form>
-        <br />
     {% endfor %}
 {% else %}
     <h2>No blacklisted items.</h2>

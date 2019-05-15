@@ -1,0 +1,14 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+{% if item %}
+<h1>Delete {{ item.title }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+              <input type="submit" name="Delete" value="Confirm">
+              <input type="submit" name="Delete" value="Cancel">
+        </form>
+{% else %}
+    <h2>This item does not exist</h2>
+{% endif %}
+{% endblock %}

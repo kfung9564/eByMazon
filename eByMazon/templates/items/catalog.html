@@ -3,30 +3,64 @@
 {% block content %}
 
 <h1>Catalog</h1>
-{% if items.all %}
-    {% for item in items %}
-        <table>
-            <tr>
-                <td colspan="2">
-                    <img src="{{ item.picture }}" style="width: 25%;" />
-                </td>
-            </tr>
-            <tr>
-                <td>Product Name:</td>
-                <td>{{ item.title }}</td>
-            </tr>
-            <tr>
-                <td>Owner:</td>
-                <td>{{ item.owner }}</td>
-            </tr>
-            <tr>
-                <td>Description:</td>
-                <td>{{ item.description }}</td>
-            </tr>
-        </table>
-        <br />
-    {% endfor %}
-{% else %}
-    <h2>No items available at this time.</h2>
-{% endif %}
+    <h1>Shopping</h1>
+    {% if fixedPriceItems.all %}
+        {% for fixedPriceItem in fixedPriceItems %}
+            <a href="{% url 'fixeditempage' %}?Title={{ fixedPriceItem.item.title }}" class="catalogitem">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Product Name:</td>
+                        <td>{{ fixedPriceItem.item.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sold by:</td>
+                        <td>{{ fixedPriceItem.item.owner }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>${{ fixedPriceItem.price }}</td>
+                    </tr>
+                </table>
+            </a>
+        {% endfor %}
+    {% else %}
+        <h2>No items on sale for fixed price.</h2>
+    {% endif %}
+
+
+    <h1>Auction</h1>
+    {% if bidPriceItems.all %}
+        {% for bidPriceItem in bidPriceItems %}
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <img src="{{ bidPriceItem.item.picture }}" class="itemicons" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Product Name:</td>
+                    <td>{{ bidPriceItem.item.title }}</td>
+                </tr>
+                <tr>
+                    <td>Sold by:</td>
+                    <td>{{ bidPriceItem.item.owner }}</td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>${{ bidPriceItem.startPrice }}</td>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        {% endfor %}
+    {% else %}
+        <h2>No items on sale for bidding.</h2>
+    {% endif %}
+
 {% endblock %}

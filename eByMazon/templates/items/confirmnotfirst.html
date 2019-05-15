@@ -1,0 +1,33 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Confirm Sale for {{ item.title }}</h1>
+{% if order %}
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        This user did not place the first order for this item. You must send submit a reason to sell to this user.
+    </div>
+    <table>
+        <tr>
+            <td>Buyer Username:</td>
+            <td>{{ order.buyer.username }}</td>
+        </tr>
+        <tr>
+            <td>Buyer:</td>
+            <td>{{ order.buyer.profile.name }}</td>
+        </tr>
+        <tr>
+            <td>Order Date:</td>
+            <td>{{ order.orderDate }}</td>
+        </tr>
+    </table>
+    <table>{{ form.as_table }}
+        <td><input type="submit" name="Confirm" value="Confirm"></td>
+        <td><input type="submit" name="Confirm" value="Cancel"></td>
+    </table>
+</form>
+{% else %}
+    <h2>No orders for this item.</h2>
+{% endif %}
+{% endblock %}

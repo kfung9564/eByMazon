@@ -1,0 +1,36 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+    <h1>{{ fixedPriceItem.item.title }}</h1>
+    {% if fixedPriceItem %}
+    <table>
+        <tr>
+            <td colspan="2">
+                <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
+            </td>
+        </tr>
+        <tr>
+            <td>Sold by:</td>
+            <td>{{ fixedPriceItem.item.owner }}</td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td>${{ fixedPriceItem.price }}</td>
+        </tr>
+        <tr>
+            <td>Keywords:</td>
+            <td>{{ fixedPriceItem.item.key_words }}</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{ fixedPriceItem.item.description }}</td>
+        </tr>
+    </table>
+    {% if not fixedPriceItem.item.owner == user %}
+        <a href="{% url 'fixeditemorder' %}?Title={{ fixedPriceItem.item.title }}"><button>Buy</button></a>
+    {% endif %}
+
+    {% else %}
+        <h2>This item does not exist</h2>
+    {% endif %}
+{% endblock %}

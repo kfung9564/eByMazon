@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'items.apps.ItemsConfig',
     'tempus_dominus',
     'reviews',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,5 @@ MESSAGE_LEVEL = message_constants.DEBUG
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/users/landing/'
 LOGOUT_REDIRECT_URL = '/'
+
+PHONENUMBER_DEFAULT_REGION = 'US'

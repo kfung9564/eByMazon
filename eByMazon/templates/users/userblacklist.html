@@ -1,0 +1,17 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Blacklisted Items</h1>
+{% if blacklist.all %}
+    {% for blacklistedUser in blacklist %}
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>{{ blacklistedUser.username }}</td>
+            </tr>
+        </table>
+    {% endfor %}
+{% else %}
+    <h2>No blacklisted users.</h2>
+{% endif %}
+{% endblock %}
