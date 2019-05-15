@@ -13,6 +13,7 @@ urlpatterns = [
     path('applications/approve', views.uappapprove, name='approveUser'),
     path('applications/deny', views.uappdeny, name='denyUser'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('edit', views.EditProfile, name = 'editprofile'),
     # users/login/ [name='login']
     # users/logout/ [name='logout']
     # users/password_change/ [name='password_change']

@@ -19,12 +19,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from . import views     
-
+from users import views as user_views
 
 urlpatterns = [
     path('items/', include('items.urls')),
     path('users/', include('users.urls')),
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('edit', user_views.EditProfile, name = 'editprofile'),
     path('r/', include('reviews.urls')),
 ]
