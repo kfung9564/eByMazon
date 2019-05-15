@@ -37,10 +37,10 @@ User Applications:
 - [x] Process applications and decide who can be OU and who should be denied. The initial password is the same as the id which the new OU is required to change the first time s/he logs in.
 
 Buying/Selling Items
-- [ ] Submit the bid to buy an available item.
-- [ ] Sell the item s/he posted; for fixed price, the first one who posted the purchase intention should be chosen, otherwise the owner should provide a note justifying why the first one is not chosen; for price range, the one with the second highest bids should be chosen, otherwise the owner should provide a note of justification. 
+- [x] Submit the bid to buy an available item.
+- [x] Sell the item s/he posted; for fixed price, the first one who posted the purchase intention should be chosen, otherwise the owner should provide a note justifying why the first one is not chosen; for price range, the one with the second highest bids should be chosen, otherwise the owner should provide a note of justification. 
 - [ ] Submit purchasing intentions if no such item exists in the system, once someone post item(s) matching the keyword(s), the OU will receive notifications.
-- [ ] The tax of every sold item is automatically evaluated based on the address of the buying OU (have a dictionary keeping the tax rate for different states).
+- [x] The tax of every sold item is automatically evaluated based on the address of the buying OU (have a dictionary keeping the tax rate for different states).
 
 Item Applications
 - [x] Submit to SUs the information (title, key words, price nature, at least one picture) of the item(s) s/he wants to sell. 
@@ -66,7 +66,7 @@ User UI
 SU privilliages
 - [ ] Collect transaction statistics for a certain period (a day or a week) or a certain OU.  
 - [ ] Maintain a taboo list with all inappropriate words, any OU’s keywords/name or items containing taboo words will be replaced by *** and the OU received one warning and required to change the word next time s/he logs in. [Don’t use real taboo words in your list, use mock ones instead to not offend anyone]
-- [ ] OUs removed from the system by SUs will be blocked based on the name for future re-application.
+- [x] OUs removed from the system by SUs will be blocked based on the name for future re-application.
 - [ ] Have the right to remove any OU based on his/her judgment. A removed OU can log in to the system for the last time to clear matters, then the account is deleted afterwards.
 
 Other constraints:
