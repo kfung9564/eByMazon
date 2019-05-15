@@ -1,0 +1,20 @@
+{% block content %}
+	<div class = "content-section">
+		<form method = "POST">
+			{% csrf_token %}
+			<dir class = "form-group">
+				<fieldset class ="form-group">
+					<legend class ="border-bottom mb-4">Review</legend>
+					{{ form }}
+				</fieldset>
+			</dir>
+			<div class= "form-group">
+				<button class = "btn btn-outline-info" type ="submit">
+					Submit				
+				</button>
+			</div>
+			
+		</form>
+
+	</div>
+{% endblock content %}

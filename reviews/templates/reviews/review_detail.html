@@ -1,0 +1,14 @@
+<article class="media content-section">
+	<img  class = "rounded-circle account -img" src = "{{ object.author.profile.image.url }}">	
+  	<div class="media-body">
+    	<h2 class = "article-title">  {{ object.title }} </h2>
+      Date: <small class="text-muted">{{ object.date_posted|date:"g:m:s - F, d Y" }}</small>
+    	<div>
+       User: <a class="mr-3" href="#">{{ object.target }}</a> 
+      </div>
+      <div>
+        Ratings: <em class = "text-muted">{{ object.ratings }}/5</em>
+      </div>
+    	<p class = "article-content">{{ object.content }}</p>
+    </div>
+</article>

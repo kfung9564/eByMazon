@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'items.apps.ItemsConfig',
-    'tempus_dominus'
-
+    'tempus_dominus',
+    'reviews',
 ]
 
 MIDDLEWARE = [
