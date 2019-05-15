@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if fixedPriceItem %}
-    <h1>Confirm Order of {{ fixedPriceItem.item.title }}</h1>
+    <h1>Order Summary</h1>
     <form method="POST">
         {% csrf_token %}
         <table>
@@ -10,6 +10,10 @@
                 <td colspan="2">
                     <img src="{{ fixedPriceItem.item.picture }}" class="itemicons" />
                 </td>
+            </tr>
+             <tr>
+                <td>Product Name:</td>
+                <td>{{ fixedPriceItem.item.title }}</td>
             </tr>
             <tr>
                 <td>Sold by:</td>
@@ -43,11 +47,28 @@
                 <td>Phone number:</td>
                 <td>{{ user.profile.phone_num }}</td>
             </tr>
-            <tr>
+        </table>
+
+         <h1>Confirm Payment Details</h1>
+        <table>
+             <tr>
                 <td>Credit Card number:</td>
                 <td>{{ censoredCardNum }}</td>
             </tr>
+            <tr>
+                <td>Price:</td>
+                <td>${{ fixedPriceItem.price }}</td>
+            </tr>
+             <tr>
+                <td>State sales tax ({{ user.profile.state }}):</td>
+                <td>+ ${{ tax }}</td>
+            </tr>
+            <tr>
+                <td>Total Price:</td>
+                <td>${{ totalPrice }}</td>
+            </tr>
         </table>
+
 
         <input type="submit" name="Order" value="Place Order">
         <input type="submit" name="Order" value="Cancel Order">

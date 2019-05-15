@@ -1,3 +1,5 @@
+import decimal
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -27,9 +29,64 @@ def fixeditempage(request):
 
 
 def fixeditemorder(request):
+    stateTax = {
+        "Alabama": 4,
+        "Alaska": 0,
+        "Arizona": 5.6,
+        "Arkansas": 6.5,
+        "California": 7.25,
+        "Colorado": 2.9,
+        "Connecticut": 6.35,
+        "Delaware": 0,
+        "Florida": 6,
+        "Georgia": 4,
+        "Hawaii": 4,
+        "Idaho": 6,
+        "Illinois": 6.25,
+        "Indiana": 7,
+        "Iowa": 6,
+        "Kansas": 6.5,
+        "Kentucky": 6,
+        "Louisiana": 4.45,
+        "Maine": 5.5,
+        "Maryland": 6,
+        "Massachusetts": 6.25,
+        "Michigan": 6,
+        "Minnesota": 6.875,
+        "Mississippi": 7,
+        "Missouri": 4.225,
+        "Montana": 0,
+        "Nebraska": 5.5,
+        "Nevada": 6.85,
+        "New Hampshire": 0,
+        "New Jersey": 6.625,
+        "New Mexico": 5.125,
+        "New York": 4,
+        "North Carolina": 4.75,
+        "North Dakota": 5,
+        "Ohio": 5.75,
+        "Oklahoma": 4.5,
+        "Oregon": 0,
+        "Pennsylvania": 6,
+        "Rhode Island": 7,
+        "South Carolina": 6,
+        "South Dakota": 4.5,
+        "Tennessee": 7,
+        "Texas": 6.25,
+        "Utah": 4.85,
+        "Vermont": 6,
+        "Virginia": 4.3,
+        "Washington": 6.5,
+        "West Virginia": 6,
+        "Wisconsin": 5,
+        "Wyoming": 4
+    }
+
     item = Item.objects.get(title=request.GET['Title'])
     fixedPriceItem = ItemFixedPrice.objects.get(item=item)
     censoredCardNum = '************' + request.user.profile.credit_card_num[12:]
+    tax = round(decimal.Decimal(stateTax.get(request.user.profile.state)) * decimal.Decimal(0.01) * fixedPriceItem.price, 2)
+    totalPrice = round(tax + fixedPriceItem.price, 2)
 
     if request.method == 'POST':
         if request.POST['Order'] == 'Place Order':
@@ -44,7 +101,9 @@ def fixeditemorder(request):
         return redirect('catalog')
 
     content = {'fixedPriceItem': fixedPriceItem,
-               'censoredCardNum': censoredCardNum}
+               'censoredCardNum': censoredCardNum,
+               'totalPrice': totalPrice,
+               'tax': tax}
     return render(request, 'items/orderitem.html', content)
 
 
