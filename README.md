@@ -53,21 +53,21 @@ Complaints
 
 Grading Users
 - [x] Grade an OU after buying an item from him/her, 0 being the worst and 5 being the best. An OU who has submitted too many low ratings, three 0 or 1 ratings in a row, or high ratings, three 5 ratings in a row, will be warned by SU as possible reckless graders.
-- [ ] An OU will become a VIP OU if her/his rating is >= 4 (by at least 3 different OUs) or spent more than $500 and without warnings, any VIP will receive 5% discount when checking out. A VIP is moved to ordinary OU if his/her rating is below 4 automatically or received one warning.
+- [x] An OU will become a VIP OU if her/his rating is >= 4 (by at least 3 different OUs) or spent more than $500 and without warnings, any VIP will receive 5% discount when checking out. A VIP is moved to ordinary OU if his/her rating is below 4 automatically or received one warning.
 - [ ] Send warnings to OUs who received two justified complaints or the average grade are lower than 2 with at least 3 different evaluators, should an OU receive two warnings this OU should be suspended from the system. A suspended OU will be notified when s/he logs in and can choose to appeal or resign. The appeal can be either approved or denied (then the user is removed).
 
 User UI
-- [ ] See his/her own transaction history.
+- [x] See his/her own transaction history.
 - [ ] When logging in, the system should have personalized recommendations to the OU based on his/her past search/purchase records, if no such information is available, the top 3 most popular items and OUs are displayed in the GUI.
 - [ ] browse/search available items based on title, keywords, price (fixed or a range for bidding) and ratings;
 - [x] Change his/her password, name, address, phone and credit card number, but not the id.
 - [ ] An OU can maintain a friend list who will receive discount and friend-only messages, the OU is free to add/delete any OU from the list.
 
 SU privilliages
-- [ ] Collect transaction statistics for a certain period (a day or a week) or a certain OU.  
+- [x] Collect transaction statistics for a certain period (a day or a week) or a certain OU.  
 - [ ] Maintain a taboo list with all inappropriate words, any OU’s keywords/name or items containing taboo words will be replaced by *** and the OU received one warning and required to change the word next time s/he logs in. [Don’t use real taboo words in your list, use mock ones instead to not offend anyone]
 - [x] OUs removed from the system by SUs will be blocked based on the name for future re-application.
-- [ ] Have the right to remove any OU based on his/her judgment. A removed OU can log in to the system for the last time to clear matters, then the account is deleted afterwards.
+- [x] Have the right to remove any OU based on his/her judgment. A removed OU can log in to the system for the last time to clear matters, then the account is deleted afterwards.
 
 Other constraints:
 - [ ] GUI is required but not necessarily web-based.
