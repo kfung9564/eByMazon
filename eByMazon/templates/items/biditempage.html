@@ -1,0 +1,44 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+    <h1>{{ bidPriceItem.item.title }}</h1>
+    {% if bidPriceItem %}
+    <table>
+        <tr>
+            <td colspan="2">
+                <img src="{{ bidPriceItem.item.picture }}" class="itemicons" />
+            </td>
+        </tr>
+        <tr>
+            <td>Sold by:</td>
+            <td>{{ bidPriceItem.item.owner }}</td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td>${{ bidPriceItem.startPrice }}</td>
+        </tr>
+        <tr>
+            <td>Start Date:</td>
+            <td>{{ bidPriceItem.startDate }}</td>
+        </tr>
+        <tr>
+            <td>End Date:</td>
+            <td>{{ bidPriceItem.endDate }}</td>
+        </tr>
+        <tr>
+            <td>Keywords:</td>
+            <td>{{ bidPriceItem.item.key_words }}</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{ bidPriceItem.item.description }}</td>
+        </tr>
+    </table>
+    {% if not bidPriceItem.item.owner == user %}
+        <a href="{% url 'placebidpage' %}?Title={{ bidPriceItem.item.title }}"><button>Bid</button></a>
+    {% endif %}
+
+    {% else %}
+        <h2>This item does not exist</h2>
+    {% endif %}
+{% endblock %}

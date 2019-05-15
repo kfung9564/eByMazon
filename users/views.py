@@ -10,6 +10,7 @@ from .models import UserApplication, Profile, UserBlacklist, UserMessages
 from .decorators import su_required
 from django.contrib.auth.hashers import make_password
 
+
 def apply(request):
     if request.method == 'POST':
         form = UserAppForm(request.POST)

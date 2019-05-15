@@ -1,11 +1,14 @@
 import decimal
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils import timezone
 
-from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice, Order
-from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm, NotFirstJustifyForm
+from items.models import Item, ItemApplication, Blacklist, ItemFixedPrice, ItemBidPrice, Order, Bid
+from items.forms import AddItemForm, EditItemForm, SellItemForm, FixedPriceForm, BidPriceForm, NotFirstJustifyForm, \
+    PlaceBidForm
 from django.contrib import messages
 from users.decorators import su_required
 
@@ -26,7 +29,7 @@ def processorders(request):
     item = Item.objects.get(title=request.GET['Title'])
     fixedItem = ItemFixedPrice.objects.get(item=item)
     orders = Order.objects.filter(item=fixedItem).order_by('orderDate')
-    firstOrder =orders[:1].get()
+    firstOrder = orders.first()
 
     content = {'orders': orders,
                'firstOrder': firstOrder,
@@ -91,7 +94,6 @@ def confirmnotfirst(request):
                'item': item,
                'form': form}
     return render(request, 'items/confirmnotfirst.html', content)
-
 
 
 def fixeditempage(request):
@@ -179,6 +181,210 @@ def fixeditemorder(request):
                'totalPrice': totalPrice,
                'tax': tax}
     return render(request, 'items/orderitem.html', content)
+
+
+def biditempage(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    bidPriceItem = ItemBidPrice.objects.get(item=item)
+
+    content = {'bidPriceItem': bidPriceItem}
+    return render(request, 'items/biditempage.html', content)
+
+
+def placebidpage(request):
+    stateTax = {
+        "Alabama": 4,
+        "Alaska": 0,
+        "Arizona": 5.6,
+        "Arkansas": 6.5,
+        "California": 7.25,
+        "Colorado": 2.9,
+        "Connecticut": 6.35,
+        "Delaware": 0,
+        "Florida": 6,
+        "Georgia": 4,
+        "Hawaii": 4,
+        "Idaho": 6,
+        "Illinois": 6.25,
+        "Indiana": 7,
+        "Iowa": 6,
+        "Kansas": 6.5,
+        "Kentucky": 6,
+        "Louisiana": 4.45,
+        "Maine": 5.5,
+        "Maryland": 6,
+        "Massachusetts": 6.25,
+        "Michigan": 6,
+        "Minnesota": 6.875,
+        "Mississippi": 7,
+        "Missouri": 4.225,
+        "Montana": 0,
+        "Nebraska": 5.5,
+        "Nevada": 6.85,
+        "New Hampshire": 0,
+        "New Jersey": 6.625,
+        "New Mexico": 5.125,
+        "New York": 4,
+        "North Carolina": 4.75,
+        "North Dakota": 5,
+        "Ohio": 5.75,
+        "Oklahoma": 4.5,
+        "Oregon": 0,
+        "Pennsylvania": 6,
+        "Rhode Island": 7,
+        "South Carolina": 6,
+        "South Dakota": 4.5,
+        "Tennessee": 7,
+        "Texas": 6.25,
+        "Utah": 4.85,
+        "Vermont": 6,
+        "Virginia": 4.3,
+        "Washington": 6.5,
+        "West Virginia": 6,
+        "Wisconsin": 5,
+        "Wyoming": 4
+    }
+
+    item = Item.objects.get(title=request.GET['Title'])
+    bidPriceItem = ItemBidPrice.objects.get(item=item)
+    censoredCardNum = '************' + request.user.profile.credit_card_num[12:]
+
+    if datetime.now() >= bidPriceItem.endDate:
+        messages.success(request, 'Bidding for ' + bidPriceItem.item.title + ' has already ended.')
+        return redirect('catalog')
+
+
+    bids = Bid.objects.filter(item=bidPriceItem).order_by('-bidPrice')
+    if not bids:
+        highest = bidPriceItem.startPrice
+    else:
+        highest = bids.first().bidPrice
+
+    if request.method == 'POST':
+        form = PlaceBidForm(request.POST)
+
+        if request.POST['Bid'] == 'Place Bid':
+            if decimal.Decimal(request.POST.get('bidPrice')) <= highest:
+                form = PlaceBidForm()
+
+                messages.success(request, 'Bid price must be higher than current highest!')
+                content = {'highest': highest,
+                           'form': form,
+                           'bidPriceItem': bidPriceItem,
+                           'censoredCardNum': censoredCardNum}
+                return render(request, 'items/placebidpage.html', content)
+
+            else:
+                Bid.objects.create(item=bidPriceItem, bidder=request.user, bidPrice=request.POST.get('bidPrice'))
+
+                messages.success(request, 'Bid for ' + bidPriceItem.item.title + ' successfully placed!')
+
+        elif request.POST['Bid'] == 'Check Tax':
+            form = PlaceBidForm(initial={'bidPrice': request.POST.get('bidPrice')})
+            tax = round(
+                decimal.Decimal(stateTax.get(request.user.profile.state)) * decimal.Decimal(0.01) * decimal.Decimal(request.POST.get(
+                    'bidPrice')),
+                2)
+            totalPrice = round(tax + decimal.Decimal(request.POST.get('bidPrice')), 2)
+
+            messages.success(request, "Total price after " + request.user.profile.state + " state tax is: " + str(totalPrice))
+            content = {'highest': highest,
+                       'form': form,
+                       'bidPriceItem': bidPriceItem,
+                       'censoredCardNum': censoredCardNum}
+            return render(request, 'items/placebidpage.html', content)
+        else:
+            messages.success(request, 'Bid for ' + bidPriceItem.item.title + ' canceled.')
+
+        return redirect('catalog')
+    else:
+        form = PlaceBidForm()
+
+    content = {'highest': highest,
+               'form': form,
+               'bidPriceItem': bidPriceItem,
+               'censoredCardNum': censoredCardNum}
+    return render(request, 'items/placebidpage.html', content)
+
+
+def processbids(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    bidItem = ItemBidPrice.objects.get(item=item)
+    bids = Bid.objects.filter(item=bidItem).order_by('-bidPrice')
+
+    winner = None
+    if bids.count() == 1:
+        winner = bids.first()
+    elif bids.count() > 1:
+        winner = bids[1]
+
+    content = {'bids': bids,
+               'winner': winner,
+               'item': item}
+    return render(request, 'items/processbids.html', content)
+
+
+def confirmwinner(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    bid = Bid.objects.get(pk=request.GET['Bid'])
+    bidder = User.objects.get(username=bid.bidder)
+
+    bidItem = ItemBidPrice.objects.get(item=item)
+
+    if request.method == 'POST':
+        if request.POST['Confirm'] == 'Confirm':
+            item.sellType = 'Offsale'
+            item.owner = bidder
+            item.save()
+            bidItem.delete()
+
+            messages.success(request, item.title + ' has been sold to ' + item.owner.profile.name + '.')
+        return redirect('itemmanager')
+
+    content = {'bid': bid,
+               'item': item}
+    return render(request, 'items/confirmwinner.html', content)
+
+
+def confirmnotwinner(request):
+    item = Item.objects.get(title=request.GET['Title'])
+    bid = Bid.objects.get(pk=request.GET['Bid'])
+    bidder = User.objects.get(username=bid.bidder)
+
+    bidItem = ItemBidPrice.objects.get(item=item)
+
+    bids = Bid.objects.filter(item=bidItem).order_by('-bidPrice')
+    winner = None
+    if bids.count() == 1:
+        winner = bids.first()
+    elif bids.count() > 1:
+        winner = bids[1]
+
+    System = User.objects.get(username='System')
+
+    if request.method == 'POST':
+        form = NotFirstJustifyForm(request.POST)
+
+        if form.is_valid():
+            if request.POST['Confirm'] == 'Confirm':
+                msg = 'Your bid was denied due to the following reasons: ' + request.POST.get('message')
+                UserMessages.objects.create(sender=System, recipient=winner.bidder, message=msg)
+
+                item.sellType = 'Offsale'
+                item.owner = bidder
+                item.save()
+                bidItem.delete()
+
+                messages.success(request, item.title + ' has been sold to ' + item.owner.profile.name + '.')
+
+                return redirect('itemmanager')
+    else:
+        form = NotFirstJustifyForm()
+
+    content = {'bid': bid,
+               'item': item,
+               'form': form}
+    return render(request, 'items/confirmnotwinner.html', content)
 
 
 def apply(request):

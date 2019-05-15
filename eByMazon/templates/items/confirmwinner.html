@@ -1,0 +1,34 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Confirm Winner for {{ item.title }}</h1>
+{% if bid %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>Bidder Username:</td>
+            <td>{{ bid.bidder.username }}</td>
+        </tr>
+        <tr>
+            <td>Bidder:</td>
+            <td>{{ bid.bidder.profile.name }}</td>
+        </tr>
+        <tr>
+            <td>Bid Date:</td>
+            <td>{{ bid.bidDate }}</td>
+        </tr>
+        <tr>
+            <td>Bid Price:</td>
+            <td>{{ bid.bidPrice }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="Confirm" value="Confirm"></td>
+            <td><input type="submit" name="Confirm" value="Cancel"></td>
+        </tr>
+    </table>
+</form>
+{% else %}
+    <h2>This bid does not exist.</h2>
+{% endif %}
+{% endblock %}

@@ -8,7 +8,7 @@ from django.forms.widgets import SplitDateTimeWidget
 from tempus_dominus.widgets import DatePicker, TimePicker, DateTimePicker
 
 from users.models import UserMessages
-from .models import Item, ItemApplication, ItemFixedPrice, ItemBidPrice, Order
+from .models import Item, ItemApplication, ItemFixedPrice, ItemBidPrice, Order, Bid
 
 
 class AddItemForm(forms.ModelForm):
@@ -21,20 +21,6 @@ class EditItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ['key_words', 'description', 'picture']
-
-
-class SellItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
-        fields = ['sellType']
-        SELL_CHOICES = (
-            ('', 'Sale type'),
-            ('Fixed Price', 'Fixed Price'),
-            ('Auction', 'Auction'),
-        )
-        widgets = {
-            'sellType': forms.Select(choices=SELL_CHOICES, attrs={'class': 'form-control'}),
-        }
 
 
 class SellItemForm(forms.ModelForm):
@@ -79,6 +65,12 @@ class BidPriceForm(forms.ModelForm):
     class Meta:
         model = ItemBidPrice
         fields = ['startPrice', 'endDate']
+
+
+class PlaceBidForm(forms.ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['bidPrice']
 
 
 class NotFirstJustifyForm(forms.ModelForm):

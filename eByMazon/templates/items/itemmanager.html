@@ -42,7 +42,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ ownedFixedItem.picture }}" style="width: 25%;" />
+                        <img src="{{ ownedFixedItem.picture }}" class="itemicons" />
                     </td>
                 </tr>
                 <tr>
@@ -76,7 +76,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ ownedBidItem.picture }}" style="width: 25%;" />
+                        <img src="{{ ownedBidItem.picture }}" class="itemicons" />
                     </td>
                 </tr>
                 <tr>
@@ -93,7 +93,7 @@
                 </tr>
                 <tr>
                     <td><a href="{% url 'edititems' %}?Title={{ ownedBidItem.title }}"><button>Edit</button></a></td>
-                    <td><a href="{% url 'putoffsale' %}?Title={{ ownedBidItem.title }}"><button>Cancel Sale</button></a></td>
+                    <td><a href="{% url 'processbids' %}?Title={{ ownedBidItem.title }}"><button>View Bids</button></a></td>
                 </tr>
             </table>
         {% endif %}

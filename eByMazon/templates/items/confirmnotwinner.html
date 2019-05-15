@@ -1,0 +1,37 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Confirm Winner for {{ item.title }}</h1>
+{% if bid %}
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        This user did not win the auction for this item. You must submit a reason to sell to this user.
+    </div>
+    <table>
+        <tr>
+            <td>Bidder Username:</td>
+            <td>{{ bid.bidder.username }}</td>
+        </tr>
+        <tr>
+            <td>Bidder:</td>
+            <td>{{ bid.bidder.profile.name }}</td>
+        </tr>
+        <tr>
+            <td>Bid Date:</td>
+            <td>{{ bid.bidDate }}</td>
+        </tr>
+        <tr>
+            <td>Bid Price:</td>
+            <td>{{ bid.bidPrice }}</td>
+        </tr>
+    </table>
+    <table>{{ form.as_table }}
+        <td><input type="submit" name="Confirm" value="Confirm"></td>
+        <td><input type="submit" name="Confirm" value="Cancel"></td>
+    </table>
+</form>
+{% else %}
+    <h2>This winner does not exist.</h2>
+{% endif %}
+{% endblock %}

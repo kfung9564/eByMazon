@@ -36,28 +36,27 @@
     <h1>Auction</h1>
     {% if bidPriceItems.all %}
         {% for bidPriceItem in bidPriceItems %}
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <img src="{{ bidPriceItem.item.picture }}" class="itemicons" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Product Name:</td>
-                    <td>{{ bidPriceItem.item.title }}</td>
-                </tr>
-                <tr>
-                    <td>Sold by:</td>
-                    <td>{{ bidPriceItem.item.owner }}</td>
-                </tr>
-                <tr>
-                    <td>Price:</td>
-                    <td>${{ bidPriceItem.startPrice }}</td>
-                </tr>
-                <tr>
-
-                </tr>
-            </table>
+            <a href="{% url 'biditempage' %}?Title={{ bidPriceItem.item.title }}" class="catalogitem">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <img src="{{ bidPriceItem.item.picture }}" class="itemicons" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Product Name:</td>
+                        <td>{{ bidPriceItem.item.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sold by:</td>
+                        <td>{{ bidPriceItem.item.owner }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>${{ bidPriceItem.startPrice }}</td>
+                    </tr>
+                </table>
+            </a>
         {% endfor %}
     {% else %}
         <h2>No items on sale for bidding.</h2>

@@ -1,0 +1,58 @@
+{% extends 'gui.html' %}
+
+{% block content %}
+<h1>Bids for {{ item.title }}</h1>
+{% if bids.all %}
+    <h2>Winner: {{ winner.bidder.profile.name }}</h2>
+        <table>
+            <tr>
+                <td>Bidder Username:</td>
+                <td>{{ winner.bidder.username }}</td>
+            </tr>
+            <tr>
+                <td>Bidder Name:</td>
+                <td>{{ winner.bidder.profile.name }}</td>
+            </tr>
+            <tr>
+                <td>Bid Date:</td>
+                <td>{{ winner.bidDate }}</td>
+            </tr>
+            <tr>
+                <td>Bid Price:</td>
+                <td>{{ winner.bidPrice }}</td>
+            </tr>
+        </table>
+        <a href="{% url 'confirmwinner' %}?Title={{ item.title }}&Bid={{ winner.pk }}"><button>Confirm Winner</button></a>
+        <br><br><br>
+    {% for bid in bids %}
+    <h2>All Bids</h2>
+        <table>
+            <tr>
+                <td>Bidder Username:</td>
+                <td>{{ bid.bidder.username }}</td>
+            </tr>
+            <tr>
+                <td>Bidder Name:</td>
+                <td>{{ bid.bidder.profile.name }}</td>
+            </tr>
+            <tr>
+                <td>Bid Date:</td>
+                <td>{{ bid.bidDate }}</td>
+            </tr>
+            <tr>
+                <td>Bid Price:</td>
+                <td>{{ bid.bidPrice }}</td>
+            </tr>
+        </table>
+            {% if bid.bidder == winner.bidder %}
+                <a href="{% url 'confirmwinner' %}?Title={{ item.title }}&Bid={{ bid.pk }}"><button>Confirm Winner</button></a>
+            {% else %}
+                <a href="{% url 'confirmnotwinner' %}?Title={{ item.title }}&Bid={{ bid.pk }}"><button>Confirm Winner</button></a>
+            {% endif %}
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'putoffsale' %}?Title={{ item.title }}"><button>Cancel Sale</button></a>
+{% else %}
+    <h2>No bids for this item.</h2>
+{% endif %}
+{% endblock %}
