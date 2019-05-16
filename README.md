@@ -1,6 +1,22 @@
 # eByMazon
 
 ## DJANGO NOTES
+Register your completed model in admin.py
+- **python manage.py makemigrations**
+- **python manage.py migrate**
+
+If you’re finished, run
+- **python manage.py runserver**
+
+If there’s no superuser, run the command
+- **python manage.py createsuperuser**
+
+Install these:
+- **pip install django-tempus-dominus**
+- **pip install django-phonenumber-field**
+- **pip install phonenumbers**
+
+
 Creating an “app” (this adds structure)
 python manage.py startapp appname
 Add it to the INSTALLED_APPS list in settings
@@ -25,10 +41,6 @@ If you’re finished, run
 
 If there’s no superuser, run the command
 - **python manage.py createsuperuser**
-
-
-### DO NOT COMMIT TO MASTER BRANCH 
-Create your own branch!!
 
 
 ## Tentative Checklist
